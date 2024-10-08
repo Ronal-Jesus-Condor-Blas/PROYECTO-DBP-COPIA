@@ -2,7 +2,7 @@
 
 ## Project Members 🤝
 
-| Name              |                                                           |
+| Name              |                                                        
 |-------------------|
 | Ronal Condor      |
 | Isaac Simeon      | 
