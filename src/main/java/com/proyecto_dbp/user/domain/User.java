@@ -1,5 +1,6 @@
 package com.proyecto_dbp.user.domain;
 
+import com.proyecto_dbp.comment.domain.Comment;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
