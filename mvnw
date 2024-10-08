@@ -97,6 +97,7 @@ die() {
   exit 1
 }
 
+
 trim() {
   # MWRAPPER-139:
   #   Trims trailing and leading whitespace, carriage returns, tabs, and linefeeds.
@@ -104,6 +105,7 @@ trim() {
   #   exotic environments such as mingw bash on Windows.
   printf "%s" "${1}" | tr -d '[:space:]'
 }
+
 
 # parse distributionUrl and optional distributionSha256Sum, requires .mvn/wrapper/maven-wrapper.properties
 while IFS="=" read -r key value; do
@@ -113,6 +115,7 @@ while IFS="=" read -r key value; do
   esac
 done <"${0%/*}/.mvn/wrapper/maven-wrapper.properties"
 [ -n "${distributionUrl-}" ] || die "cannot read distributionUrl property in ${0%/*}/.mvn/wrapper/maven-wrapper.properties"
+
 
 case "${distributionUrl##*/}" in
 maven-mvnd-*bin.*)
@@ -132,6 +135,7 @@ maven-mvnd-*bin.*)
 maven-mvnd-*) MVN_CMD=mvnd.sh _MVNW_REPO_PATTERN=/maven/mvnd/ ;;
 *) MVN_CMD="mvn${0##*/mvnw}" _MVNW_REPO_PATTERN=/org/apache/maven/ ;;
 esac
+
 
 # apply MVNW_REPOURL and calculate MAVEN_HOME
 # maven home pattern: ~/.m2/wrapper/dists/{apache-maven-<version>,maven-mvnd-<version>-<platform>}/<hash>

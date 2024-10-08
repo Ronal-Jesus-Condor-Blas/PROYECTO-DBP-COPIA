@@ -71,6 +71,7 @@ switch -wildcard -casesensitive ( $($distributionUrl -replace '^.*/','') ) {
 }
 
 # apply MVNW_REPOURL and calculate MAVEN_HOME
+
 # maven home pattern: ~/.m2/wrapper/dists/{apache-maven-<version>,maven-mvnd-<version>-<platform>}/<hash>
 if ($env:MVNW_REPOURL) {
   $MVNW_REPO_PATTERN = if ($USE_MVND) { "/org/apache/maven/" } else { "/maven/mvnd/" }
@@ -114,6 +115,7 @@ Write-Verbose "Downloading from: $distributionUrl"
 Write-Verbose "Downloading to: $TMP_DOWNLOAD_DIR/$distributionUrlName"
 
 $webclient = New-Object System.Net.WebClient
+
 if ($env:MVNW_USERNAME -and $env:MVNW_PASSWORD) {
   $webclient.Credentials = New-Object System.Net.NetworkCredential($env:MVNW_USERNAME, $env:MVNW_PASSWORD)
 }
@@ -145,5 +147,6 @@ try {
   try { Remove-Item $TMP_DOWNLOAD_DIR -Recurse -Force | Out-Null }
   catch { Write-Warning "Cannot remove $TMP_DOWNLOAD_DIR" }
 }
+
 
 Write-Output "MVN_CMD=$MAVEN_HOME/bin/$MVN_CMD"
