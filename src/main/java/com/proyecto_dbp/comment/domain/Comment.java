@@ -1,5 +1,7 @@
 package com.proyecto_dbp.comment.domain;
 
+import com.proyecto_dbp.post.domain.Post;
+import com.proyecto_dbp.user.domain.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;

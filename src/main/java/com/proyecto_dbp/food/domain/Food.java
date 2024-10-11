@@ -1,6 +1,7 @@
 package com.proyecto_dbp.food.domain;
 
 import com.proyecto_dbp.foodrating.domain.FoodRating;
+import com.proyecto_dbp.restaurant.domain.Restaurant;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;

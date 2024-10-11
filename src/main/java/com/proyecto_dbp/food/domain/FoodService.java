@@ -1,4 +1,4 @@
 package com.proyecto_dbp.food.domain;
 
-public class FoodRatingService {
+public class FoodService {
 }

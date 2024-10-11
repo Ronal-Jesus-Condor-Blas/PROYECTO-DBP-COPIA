@@ -1,6 +1,9 @@
 package com.proyecto_dbp.user.domain;
 
 import com.proyecto_dbp.comment.domain.Comment;
+import com.proyecto_dbp.foodrating.domain.FoodRating;
+import com.proyecto_dbp.post.domain.Post;
+import com.proyecto_dbp.restaurantrating.domain.RestaurantRating;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
