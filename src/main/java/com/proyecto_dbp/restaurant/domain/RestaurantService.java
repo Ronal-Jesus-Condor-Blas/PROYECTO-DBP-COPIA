@@ -1,5 +1,7 @@
 package com.proyecto_dbp.restaurant.domain;
 
+import com.proyecto_dbp.exception.ResourceNotFoundException;
+import com.proyecto_dbp.exception.ValidationException;
 import com.proyecto_dbp.restaurant.dto.RestaurantRequestDto;
 import com.proyecto_dbp.restaurant.dto.RestaurantResponseDto;
 import com.proyecto_dbp.restaurant.infrastructure.RestaurantRepository;
@@ -7,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -17,8 +18,9 @@ public class RestaurantService {
     private RestaurantRepository restaurantRepository;
 
     public RestaurantResponseDto getRestaurantById(Long id) {
-        Optional<Restaurant> restaurant = restaurantRepository.findById(id);
-        return restaurant.map(this::mapToDto).orElse(null);
+        Restaurant restaurant = restaurantRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Restaurant not found with id " + id));
+        return mapToDto(restaurant);
     }
 
     public List<RestaurantResponseDto> getAllRestaurants() {
@@ -27,25 +29,31 @@ public class RestaurantService {
     }
 
     public RestaurantResponseDto createRestaurant(RestaurantRequestDto restaurantRequestDto) {
+        if (restaurantRequestDto.getName() == null || restaurantRequestDto.getName().isEmpty()) {
+            throw new ValidationException("Name cannot be null or empty");
+        }
         Restaurant restaurant = mapToEntity(restaurantRequestDto);
         restaurant = restaurantRepository.save(restaurant);
         return mapToDto(restaurant);
     }
 
     public RestaurantResponseDto updateRestaurant(Long id, RestaurantRequestDto restaurantRequestDto) {
-        Optional<Restaurant> restaurantOptional = restaurantRepository.findById(id);
-        if (restaurantOptional.isPresent()) {
-            Restaurant restaurant = restaurantOptional.get();
-            restaurant.setName(restaurantRequestDto.getName());
-            restaurant.setLocation(restaurantRequestDto.getLocation());
-            restaurant.setStatus(restaurantRequestDto.getStatus());
-            restaurant = restaurantRepository.save(restaurant);
-            return mapToDto(restaurant);
+        Restaurant restaurant = restaurantRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Restaurant not found with id " + id));
+        if (restaurantRequestDto.getName() == null || restaurantRequestDto.getName().isEmpty()) {
+            throw new ValidationException("Name cannot be null or empty");
         }
-        return null;
+        restaurant.setName(restaurantRequestDto.getName());
+        restaurant.setLocation(restaurantRequestDto.getLocation());
+        restaurant.setStatus(restaurantRequestDto.getStatus());
+        restaurant = restaurantRepository.save(restaurant);
+        return mapToDto(restaurant);
     }
 
     public void deleteRestaurant(Long id) {
+        if (!restaurantRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Restaurant not found with id " + id);
+        }
         restaurantRepository.deleteById(id);
     }
 

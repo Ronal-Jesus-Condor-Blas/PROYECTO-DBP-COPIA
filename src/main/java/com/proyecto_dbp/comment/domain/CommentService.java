@@ -1,6 +1,7 @@
 package com.proyecto_dbp.comment.domain;
 
-import com.proyecto_dbp.comment.domain.Comment;
+import com.proyecto_dbp.exception.ResourceNotFoundException;
+import com.proyecto_dbp.exception.ValidationException;
 import com.proyecto_dbp.comment.dto.CommentRequestDto;
 import com.proyecto_dbp.comment.dto.CommentResponseDto;
 import com.proyecto_dbp.comment.infrastructure.CommentRepository;
@@ -13,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,14 +23,15 @@ public class CommentService {
     private CommentRepository commentRepository;
 
     @Autowired
-    private UserRepository userRepository; // Add UserRepository
+    private UserRepository userRepository;
 
     @Autowired
-    private PostRepository postRepository; // Add PostRepository
+    private PostRepository postRepository;
 
     public CommentResponseDto getCommentById(Long id) {
-        Optional<Comment> comment = commentRepository.findById(id);
-        return comment.map(this::mapToDto).orElse(null);
+        Comment comment = commentRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Comment not found with id " + id));
+        return mapToDto(comment);
     }
 
     public List<CommentResponseDto> getCommentsByPostId(Long postId) {
@@ -39,24 +40,30 @@ public class CommentService {
     }
 
     public CommentResponseDto createComment(CommentRequestDto commentRequestDto) {
+        if (commentRequestDto.getContent() == null || commentRequestDto.getContent().isEmpty()) {
+            throw new ValidationException("Content cannot be null or empty");
+        }
         Comment comment = mapToEntity(commentRequestDto);
-        comment.setCommentDate(LocalDateTime.now()); // Set comment date
+        comment.setCommentDate(LocalDateTime.now());
         comment = commentRepository.save(comment);
         return mapToDto(comment);
     }
 
     public CommentResponseDto updateComment(Long id, CommentRequestDto commentRequestDto) {
-        Optional<Comment> commentOptional = commentRepository.findById(id);
-        if (commentOptional.isPresent()) {
-            Comment comment = commentOptional.get();
-            comment.setContent(commentRequestDto.getContent());
-            comment = commentRepository.save(comment);
-            return mapToDto(comment);
+        Comment comment = commentRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Comment not found with id " + id));
+        if (commentRequestDto.getContent() == null || commentRequestDto.getContent().isEmpty()) {
+            throw new ValidationException("Content cannot be null or empty");
         }
-        return null;
+        comment.setContent(commentRequestDto.getContent());
+        comment = commentRepository.save(comment);
+        return mapToDto(comment);
     }
 
     public void deleteComment(Long id) {
+        if (!commentRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Comment not found with id " + id);
+        }
         commentRepository.deleteById(id);
     }
 
@@ -74,13 +81,12 @@ public class CommentService {
         Comment comment = new Comment();
         comment.setContent(commentRequestDto.getContent());
 
-        // Fetch user and post from their respective repositories
         User user = userRepository.findById(commentRequestDto.getUserId())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id " + commentRequestDto.getUserId()));
         comment.setUser(user);
 
         Post post = postRepository.findById(commentRequestDto.getPostId())
-                .orElseThrow(() -> new RuntimeException("Post not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Post not found with id " + commentRequestDto.getPostId()));
         comment.setPost(post);
 
         return comment;

@@ -1,5 +1,7 @@
 package com.proyecto_dbp.typefood.domain;
 
+import com.proyecto_dbp.exception.ResourceNotFoundException;
+import com.proyecto_dbp.exception.ValidationException;
 import com.proyecto_dbp.typefood.dto.TypeFoodRequestDto;
 import com.proyecto_dbp.typefood.dto.TypeFoodResponseDto;
 import com.proyecto_dbp.typefood.infrastructure.TypeFoodRepository;
@@ -7,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -17,8 +18,9 @@ public class TypeFoodService {
     private TypeFoodRepository typeFoodRepository;
 
     public TypeFoodResponseDto getTypeFoodById(Long id) {
-        Optional<TypeFood> typeFood = typeFoodRepository.findById(id);
-        return typeFood.map(this::mapToDto).orElse(null);
+        TypeFood typeFood = typeFoodRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("TypeFood not found with id " + id));
+        return mapToDto(typeFood);
     }
 
     public List<TypeFoodResponseDto> getAllTypeFoods() {
@@ -27,23 +29,29 @@ public class TypeFoodService {
     }
 
     public TypeFoodResponseDto createTypeFood(TypeFoodRequestDto typeFoodRequestDto) {
+        if (typeFoodRequestDto.getType() == null || typeFoodRequestDto.getType().isEmpty()) {
+            throw new ValidationException("Type cannot be null or empty");
+        }
         TypeFood typeFood = mapToEntity(typeFoodRequestDto);
         typeFood = typeFoodRepository.save(typeFood);
         return mapToDto(typeFood);
     }
 
     public TypeFoodResponseDto updateTypeFood(Long id, TypeFoodRequestDto typeFoodRequestDto) {
-        Optional<TypeFood> typeFoodOptional = typeFoodRepository.findById(id);
-        if (typeFoodOptional.isPresent()) {
-            TypeFood typeFood = typeFoodOptional.get();
-            typeFood.setType(typeFoodRequestDto.getType());
-            typeFood = typeFoodRepository.save(typeFood);
-            return mapToDto(typeFood);
+        TypeFood typeFood = typeFoodRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("TypeFood not found with id " + id));
+        if (typeFoodRequestDto.getType() == null || typeFoodRequestDto.getType().isEmpty()) {
+            throw new ValidationException("Type cannot be null or empty");
         }
-        return null;
+        typeFood.setType(typeFoodRequestDto.getType());
+        typeFood = typeFoodRepository.save(typeFood);
+        return mapToDto(typeFood);
     }
 
     public void deleteTypeFood(Long id) {
+        if (!typeFoodRepository.existsById(id)) {
+            throw new ResourceNotFoundException("TypeFood not found with id " + id);
+        }
         typeFoodRepository.deleteById(id);
     }
 

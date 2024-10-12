@@ -1,5 +1,7 @@
 package com.proyecto_dbp.post.domain;
 
+import com.proyecto_dbp.exception.ResourceNotFoundException;
+import com.proyecto_dbp.exception.ValidationException;
 import com.proyecto_dbp.post.dto.PostRequestDto;
 import com.proyecto_dbp.post.dto.PostResponseDto;
 import com.proyecto_dbp.post.infrastructure.PostRepository;
@@ -10,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -20,11 +21,12 @@ public class PostService {
     private PostRepository postRepository;
 
     @Autowired
-    private UserRepository userRepository; // Add UserRepository
+    private UserRepository userRepository;
 
     public PostResponseDto getPostById(Long id) {
-        Optional<Post> post = postRepository.findById(id);
-        return post.map(this::mapToDto).orElse(null);
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Post not found with id " + id));
+        return mapToDto(post);
     }
 
     public List<PostResponseDto> getAllPosts() {
@@ -33,26 +35,32 @@ public class PostService {
     }
 
     public PostResponseDto createPost(PostRequestDto postRequestDto) {
+        if (postRequestDto.getContent() == null || postRequestDto.getContent().isEmpty()) {
+            throw new ValidationException("Content cannot be null or empty");
+        }
         Post post = mapToEntity(postRequestDto);
-        post.setCreatedDate(LocalDateTime.now()); // Set created date
+        post.setCreatedDate(LocalDateTime.now());
         post = postRepository.save(post);
         return mapToDto(post);
     }
 
     public PostResponseDto updatePost(Long id, PostRequestDto postRequestDto) {
-        Optional<Post> postOptional = postRepository.findById(id);
-        if (postOptional.isPresent()) {
-            Post post = postOptional.get();
-            post.setContent(postRequestDto.getContent());
-            post.setImage(postRequestDto.getImage());
-            post.setStatus(postRequestDto.getStatus());
-            post = postRepository.save(post);
-            return mapToDto(post);
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Post not found with id " + id));
+        if (postRequestDto.getContent() == null || postRequestDto.getContent().isEmpty()) {
+            throw new ValidationException("Content cannot be null or empty");
         }
-        return null;
+        post.setContent(postRequestDto.getContent());
+        post.setImage(postRequestDto.getImage());
+        post.setStatus(postRequestDto.getStatus());
+        post = postRepository.save(post);
+        return mapToDto(post);
     }
 
     public void deletePost(Long id) {
+        if (!postRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Post not found with id " + id);
+        }
         postRepository.deleteById(id);
     }
 
@@ -73,9 +81,8 @@ public class PostService {
         post.setImage(postRequestDto.getImage());
         post.setStatus(postRequestDto.getStatus());
 
-        // Fetch user from UserRepository
         User user = userRepository.findById(postRequestDto.getUserId())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id " + postRequestDto.getUserId()));
         post.setUser(user);
 
         return post;

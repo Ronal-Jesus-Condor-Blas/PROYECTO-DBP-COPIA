@@ -1,5 +1,7 @@
 package com.proyecto_dbp.food.domain;
 
+import com.proyecto_dbp.exception.ResourceNotFoundException;
+import com.proyecto_dbp.exception.ValidationException;
 import com.proyecto_dbp.food.dto.FoodRequestDto;
 import com.proyecto_dbp.food.dto.FoodResponseDto;
 import com.proyecto_dbp.food.infrastructure.FoodRepository;
@@ -7,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -17,8 +18,9 @@ public class FoodService {
     private FoodRepository foodRepository;
 
     public FoodResponseDto getFoodById(Long id) {
-        Optional<Food> food = foodRepository.findById(id);
-        return food.map(this::mapToDto).orElse(null);
+        Food food = foodRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Food not found with id " + id));
+        return mapToDto(food);
     }
 
     public List<FoodResponseDto> getAllFoods() {
@@ -27,25 +29,31 @@ public class FoodService {
     }
 
     public FoodResponseDto createFood(FoodRequestDto foodRequestDto) {
+        if (foodRequestDto.getName() == null || foodRequestDto.getName().isEmpty()) {
+            throw new ValidationException("Name cannot be null or empty");
+        }
         Food food = mapToEntity(foodRequestDto);
         food = foodRepository.save(food);
         return mapToDto(food);
     }
 
     public FoodResponseDto updateFood(Long id, FoodRequestDto foodRequestDto) {
-        Optional<Food> foodOptional = foodRepository.findById(id);
-        if (foodOptional.isPresent()) {
-            Food food = foodOptional.get();
-            food.setName(foodRequestDto.getName());
-            food.setPrice(foodRequestDto.getPrice());
-            food.setStatus(foodRequestDto.getStatus());
-            food = foodRepository.save(food);
-            return mapToDto(food);
+        Food food = foodRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Food not found with id " + id));
+        if (foodRequestDto.getName() == null || foodRequestDto.getName().isEmpty()) {
+            throw new ValidationException("Name cannot be null or empty");
         }
-        return null;
+        food.setName(foodRequestDto.getName());
+        food.setPrice(foodRequestDto.getPrice());
+        food.setStatus(foodRequestDto.getStatus());
+        food = foodRepository.save(food);
+        return mapToDto(food);
     }
 
     public void deleteFood(Long id) {
+        if (!foodRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Food not found with id " + id);
+        }
         foodRepository.deleteById(id);
     }
 

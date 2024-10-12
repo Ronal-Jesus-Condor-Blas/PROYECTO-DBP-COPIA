@@ -1,5 +1,7 @@
 package com.proyecto_dbp.restaurantrating.domain;
 
+import com.proyecto_dbp.exception.ResourceNotFoundException;
+import com.proyecto_dbp.exception.ValidationException;
 import com.proyecto_dbp.restaurant.domain.Restaurant;
 import com.proyecto_dbp.restaurantrating.dto.RestaurantRatingRequestDto;
 import com.proyecto_dbp.restaurantrating.dto.RestaurantRatingResponseDto;
@@ -19,34 +21,41 @@ public class RestaurantRatingService {
     private RestaurantRatingRepository restaurantRatingRepository;
 
     public RestaurantRatingResponseDto getRestaurantRatingById(Long id) {
-        Optional<RestaurantRating> restaurantRating = restaurantRatingRepository.findById(id);
-        return restaurantRating.map(this::mapToDto).orElse(null);
+        RestaurantRating restaurantRating = restaurantRatingRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("RestaurantRating no encontrado con id " + id));
+        return mapToDto(restaurantRating);
     }
 
     public List<RestaurantRatingResponseDto> getRestaurantRatingsByRestaurantId(Long restaurantId) {
         List<RestaurantRating> restaurantRatings = restaurantRatingRepository.findByRestaurantId(restaurantId);
+        if (restaurantRatings.isEmpty()) {
+            throw new ResourceNotFoundException("No se encontraron calificaciones para el restaurante con id " + restaurantId);
+        }
         return restaurantRatings.stream().map(this::mapToDto).collect(Collectors.toList());
     }
 
     public RestaurantRatingResponseDto createRestaurantRating(RestaurantRatingRequestDto restaurantRatingRequestDto) {
+        if (restaurantRatingRequestDto.getRating() < 1 || restaurantRatingRequestDto.getRating() > 5) {
+            throw new ValidationException("La calificación debe estar entre 1 y 5");
+        }
         RestaurantRating restaurantRating = mapToEntity(restaurantRatingRequestDto);
         restaurantRating = restaurantRatingRepository.save(restaurantRating);
         return mapToDto(restaurantRating);
     }
 
     public RestaurantRatingResponseDto updateRestaurantRating(Long id, RestaurantRatingRequestDto restaurantRatingRequestDto) {
-        Optional<RestaurantRating> restaurantRatingOptional = restaurantRatingRepository.findById(id);
-        if (restaurantRatingOptional.isPresent()) {
-            RestaurantRating restaurantRating = restaurantRatingOptional.get();
-            restaurantRating.setRating(restaurantRatingRequestDto.getRating());
-            restaurantRating.setComment(restaurantRatingRequestDto.getComment());
-            restaurantRating = restaurantRatingRepository.save(restaurantRating);
-            return mapToDto(restaurantRating);
-        }
-        return null;
+        RestaurantRating restaurantRating = restaurantRatingRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("RestaurantRating no encontrado con id " + id));
+        restaurantRating.setRating(restaurantRatingRequestDto.getRating());
+        restaurantRating.setComment(restaurantRatingRequestDto.getComment());
+        restaurantRating = restaurantRatingRepository.save(restaurantRating);
+        return mapToDto(restaurantRating);
     }
 
     public void deleteRestaurantRating(Long id) {
+        if (!restaurantRatingRepository.existsById(id)) {
+            throw new ResourceNotFoundException("RestaurantRating no encontrado con id " + id);
+        }
         restaurantRatingRepository.deleteById(id);
     }
 

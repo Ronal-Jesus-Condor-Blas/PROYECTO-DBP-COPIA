@@ -1,3 +1,4 @@
+// src/main/java/com/proyecto_dbp/restaurantrating/application/RestaurantRatingController.java
 package com.proyecto_dbp.restaurantrating.application;
 
 import com.proyecto_dbp.restaurantrating.domain.RestaurantRatingService;
