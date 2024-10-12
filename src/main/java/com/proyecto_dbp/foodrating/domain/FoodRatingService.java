@@ -26,7 +26,7 @@ public class FoodRatingService {
     }
 
     public List<FoodRatingResponseDto> getFoodRatingsByFoodId(Long foodId) {
-        List<FoodRating> foodRatings = foodRatingRepository.findByFoodId(foodId);
+        List<FoodRating> foodRatings = foodRatingRepository.findByFoodFoodId(foodId);
         if (foodRatings.isEmpty()) {
             throw new ResourceNotFoundException("No ratings found for food with id " + foodId);
         }

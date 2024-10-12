@@ -35,7 +35,7 @@ public class CommentService {
     }
 
     public List<CommentResponseDto> getCommentsByPostId(Long postId) {
-        List<Comment> comments = commentRepository.findByPostId(postId);
+        List<Comment> comments = commentRepository.findByPostPostId(postId);
         return comments.stream().map(this::mapToDto).collect(Collectors.toList());
     }
 

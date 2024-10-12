@@ -4,16 +4,20 @@ import com.proyecto_dbp.exception.ResourceNotFoundException;
 import com.proyecto_dbp.exception.ValidationException;
 import com.proyecto_dbp.user.dto.UserRequestDto;
 import com.proyecto_dbp.user.dto.UserResponseDto;
+import com.proyecto_dbp.user.event.UserRegisteredEvent;
 import com.proyecto_dbp.user.infrastructure.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
-
 
 @Service
 public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private ApplicationEventPublisher eventPublisher;
 
     public UserResponseDto getUserById(Long userId) {
         User user = userRepository.findById(userId)
@@ -33,6 +37,7 @@ public class UserService {
         }
         User user = mapToEntity(userRequestDto);
         user = userRepository.save(user);
+        eventPublisher.publishEvent(new UserRegisteredEvent(user));
         return mapToResponseDto(user);
     }
 

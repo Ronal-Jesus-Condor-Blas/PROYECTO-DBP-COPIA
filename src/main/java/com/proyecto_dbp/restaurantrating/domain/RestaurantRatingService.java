@@ -27,7 +27,7 @@ public class RestaurantRatingService {
     }
 
     public List<RestaurantRatingResponseDto> getRestaurantRatingsByRestaurantId(Long restaurantId) {
-        List<RestaurantRating> restaurantRatings = restaurantRatingRepository.findByRestaurantId(restaurantId);
+        List<RestaurantRating> restaurantRatings = restaurantRatingRepository.findByRestaurantRestaurantId(restaurantId);
         if (restaurantRatings.isEmpty()) {
             throw new ResourceNotFoundException("No se encontraron calificaciones para el restaurante con id " + restaurantId);
         }
