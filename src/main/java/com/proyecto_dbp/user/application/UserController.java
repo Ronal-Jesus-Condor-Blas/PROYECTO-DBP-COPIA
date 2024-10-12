@@ -2,7 +2,8 @@ package com.proyecto_dbp.user.application;
 
 import com.proyecto_dbp.auth.utils.AuthorizationUtils;
 import com.proyecto_dbp.user.domain.UserService;
-import com.proyecto_dbp.user.dto.UserDto;
+import com.proyecto_dbp.user.dto.UserRequestDto;
+import com.proyecto_dbp.user.dto.UserResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,29 +19,29 @@ public class UserController {
     private AuthorizationUtils authorizationUtils;
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserDto> getUserById(@PathVariable Long id) {
+    public ResponseEntity<UserResponseDto> getUserById(@PathVariable Long id) {
         if (!authorizationUtils.isAdminOrResourceOwner(id)) {
             return ResponseEntity.status(403).build(); // Forbidden
         }
-        UserDto userDto = userService.getUserById(id);
-        if (userDto != null) {
-            return ResponseEntity.ok(userDto);
+        UserResponseDto userResponseDto = userService.getUserById(id);
+        if (userResponseDto != null) {
+            return ResponseEntity.ok(userResponseDto);
         }
         return ResponseEntity.notFound().build();
     }
 
     @PostMapping
-    public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto) {
-        UserDto createdUser = userService.createUser(userDto);
+    public ResponseEntity<UserResponseDto> createUser(@RequestBody UserRequestDto userRequestDto) {
+        UserResponseDto createdUser = userService.createUser(userRequestDto);
         return ResponseEntity.ok(createdUser);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserDto> updateUser(@PathVariable Long id, @RequestBody UserDto userDto) {
+    public ResponseEntity<UserResponseDto> updateUser(@PathVariable Long id, @RequestBody UserRequestDto userRequestDto) {
         if (!authorizationUtils.isAdminOrResourceOwner(id)) {
             return ResponseEntity.status(403).build(); // Forbidden
         }
-        UserDto updatedUser = userService.updateUser(id, userDto);
+        UserResponseDto updatedUser = userService.updateUser(id, userRequestDto);
         if (updatedUser != null) {
             return ResponseEntity.ok(updatedUser);
         }
@@ -57,14 +58,14 @@ public class UserController {
     }
 
     @GetMapping("/current")
-    public ResponseEntity<UserDto> getCurrentUser() {
+    public ResponseEntity<UserResponseDto> getCurrentUser() {
         String email = authorizationUtils.getCurrentUserEmail();
         if (email == null) {
             return ResponseEntity.status(403).build(); // Forbidden
         }
-        UserDto userDto = userService.getUserByEmail(email);
-        if (userDto != null) {
-            return ResponseEntity.ok(userDto);
+        UserResponseDto userResponseDto = userService.getUserByEmail(email);
+        if (userResponseDto != null) {
+            return ResponseEntity.ok(userResponseDto);
         }
         return ResponseEntity.notFound().build();
     }

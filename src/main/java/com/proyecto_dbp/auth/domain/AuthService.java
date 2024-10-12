@@ -6,7 +6,8 @@ import com.proyecto_dbp.auth.dto.RegisterRequest;
 import com.proyecto_dbp.auth.excepcions.UserAlreadyExistException;
 import com.proyecto_dbp.auth.utils.JwtTokenProvider;
 import com.proyecto_dbp.user.domain.UserService;
-import com.proyecto_dbp.user.dto.UserDto;
+import com.proyecto_dbp.user.dto.UserRequestDto;
+import com.proyecto_dbp.user.dto.UserResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -46,14 +47,14 @@ public class AuthService {
             throw new UserAlreadyExistException("User with email " + registerRequest.getEmail() + " already exists");
         }
 
-        UserDto userDto = new UserDto();
-        userDto.setName(registerRequest.getName());
-        userDto.setEmail(registerRequest.getEmail());
-        userDto.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
-        userDto.setBio(registerRequest.getBio());
-        userDto.setUserType(registerRequest.getUserType());
+        UserRequestDto userRequestDto = new UserRequestDto();
+        userRequestDto.setName(registerRequest.getName());
+        userRequestDto.setEmail(registerRequest.getEmail());
+        userRequestDto.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
+        userRequestDto.setBio(registerRequest.getBio());
+        userRequestDto.setUserType(registerRequest.getUserType());
 
-        userService.createUser(userDto);
+        userService.createUser(userRequestDto);
 
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(

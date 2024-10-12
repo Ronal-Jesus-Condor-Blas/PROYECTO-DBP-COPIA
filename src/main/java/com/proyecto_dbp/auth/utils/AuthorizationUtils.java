@@ -1,8 +1,7 @@
 package com.proyecto_dbp.auth.utils;
 
-
 import com.proyecto_dbp.user.domain.UserService;
-import com.proyecto_dbp.user.dto.UserDto;
+import com.proyecto_dbp.user.dto.UserResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,9 +18,9 @@ public class AuthorizationUtils {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         String username = userDetails.getUsername();
-        UserDto userDto = userService.getUserByEmail(username);
+        UserResponseDto userResponseDto = userService.getUserByEmail(username);
 
-        return userDto.getUserId().equals(id) || userDto.getUserType().toString().equals("INFLUENCER");
+        return userResponseDto.getUserId().equals(id) || userResponseDto.getUserType().toString().equals("INFLUENCER");
     }
 
     public String getCurrentUserEmail() {

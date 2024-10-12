@@ -1,6 +1,7 @@
 package com.proyecto_dbp.user.domain;
 
-import com.proyecto_dbp.user.dto.UserDto;
+import com.proyecto_dbp.user.dto.UserRequestDto;
+import com.proyecto_dbp.user.dto.UserResponseDto;
 import com.proyecto_dbp.user.infrastructure.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,38 +14,32 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public UserDto getUserById(Long userId) {
+    public UserResponseDto getUserById(Long userId) {
         Optional<User> user = userRepository.findById(userId);
-        if (user.isPresent()) {
-            return mapToDto(user.get());
-        }
-        return null;
+        return user.map(this::mapToResponseDto).orElse(null);
     }
 
-    public UserDto getUserByEmail(String email) {
+    public UserResponseDto getUserByEmail(String email) {
         Optional<User> user = userRepository.findByEmail(email);
-        if (user.isPresent()) {
-            return mapToDto(user.get());
-        }
-        return null;
+        return user.map(this::mapToResponseDto).orElse(null);
     }
 
-    public UserDto createUser(UserDto userDto) {
-        User user = mapToEntity(userDto);
+    public UserResponseDto createUser(UserRequestDto userRequestDto) {
+        User user = mapToEntity(userRequestDto);
         user = userRepository.save(user);
-        return mapToDto(user);
+        return mapToResponseDto(user);
     }
 
-    public UserDto updateUser(Long userId, UserDto userDto) {
+    public UserResponseDto updateUser(Long userId, UserRequestDto userRequestDto) {
         Optional<User> userOptional = userRepository.findById(userId);
         if (userOptional.isPresent()) {
             User user = userOptional.get();
-            user.setName(userDto.getName());
-            user.setEmail(userDto.getEmail());
-            user.setBio(userDto.getBio());
-            user.setUserType(userDto.getUserType());
+            user.setName(userRequestDto.getName());
+            user.setEmail(userRequestDto.getEmail());
+            user.setBio(userRequestDto.getBio());
+            user.setUserType(userRequestDto.getUserType());
             user = userRepository.save(user);
-            return mapToDto(user);
+            return mapToResponseDto(user);
         }
         return null;
     }
@@ -53,22 +48,23 @@ public class UserService {
         userRepository.deleteById(userId);
     }
 
-    private UserDto mapToDto(User user) {
-        UserDto userDto = new UserDto();
-        userDto.setUserId(user.getUserId());
-        userDto.setName(user.getName());
-        userDto.setEmail(user.getEmail());
-        userDto.setBio(user.getBio());
-        userDto.setUserType(user.getUserType());
-        return userDto;
+    private UserResponseDto mapToResponseDto(User user) {
+        UserResponseDto userResponseDto = new UserResponseDto();
+        userResponseDto.setUserId(user.getUserId());
+        userResponseDto.setName(user.getName());
+        userResponseDto.setEmail(user.getEmail());
+        userResponseDto.setBio(user.getBio());
+        userResponseDto.setUserType(user.getUserType());
+        return userResponseDto;
     }
 
-    private User mapToEntity(UserDto userDto) {
+    private User mapToEntity(UserRequestDto userRequestDto) {
         User user = new User();
-        user.setName(userDto.getName());
-        user.setEmail(userDto.getEmail());
-        user.setBio(userDto.getBio());
-        user.setUserType(userDto.getUserType());
+        user.setName(userRequestDto.getName());
+        user.setEmail(userRequestDto.getEmail());
+        user.setBio(userRequestDto.getBio());
+        user.setUserType(userRequestDto.getUserType());
+        user.setPassword(userRequestDto.getPassword());
         return user;
     }
 }

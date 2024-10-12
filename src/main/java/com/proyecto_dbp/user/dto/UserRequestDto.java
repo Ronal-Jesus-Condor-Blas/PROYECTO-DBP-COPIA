@@ -4,11 +4,10 @@ import com.proyecto_dbp.user.domain.UserType;
 import lombok.Data;
 
 @Data
-public class UserDto {
-    private Long userId;
+public class UserRequestDto {
     private String name;
     private String email;
     private String bio;
     private UserType userType;
-    private String password; // Añadir este campo
+    private String password;
 }
