@@ -1,15 +1,13 @@
 package com.proyecto_dbp.auth.dto;
 
+import com.proyecto_dbp.user.domain.UserType;
 import lombok.Data;
 
 @Data
-public class RegisterReq {
-    private String firstName;
-    private String lastName;
+public class RegisterRequest {
+    private String name;
     private String email;
     private String password;
-    private String phone;
-    private Boolean isDriver = false;
-    private Category category;
-    private VehicleBasicDto vehicle;
+    private String bio;
+    private UserType userType;
 }

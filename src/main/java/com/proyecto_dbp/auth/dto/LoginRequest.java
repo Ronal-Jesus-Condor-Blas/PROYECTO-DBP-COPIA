@@ -1,4 +1,9 @@
 package com.proyecto_dbp.auth.dto;
 
-public class LoginReq {
+import lombok.Data;
+
+@Data
+public class LoginRequest {
+    private String email;
+    private String password;
 }

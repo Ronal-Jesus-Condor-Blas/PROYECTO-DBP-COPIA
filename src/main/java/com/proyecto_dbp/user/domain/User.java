@@ -6,46 +6,90 @@ import com.proyecto_dbp.post.domain.Post;
 import com.proyecto_dbp.restaurantrating.domain.RestaurantRating;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.Set;
 
+@Data
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
-public class User {
+@Table(name = "users")
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
     @NotNull
-    @Size(max = 100)
     private String name;
     @NotNull
+    @NotBlank
     @Email
+    @Column(unique = true)
     private String email;
-    @NotNull
+    @NotBlank
+    @Size(min = 8, max = 64)
     private String password;
-    private String profilePicture;
     private String bio;
     @Enumerated(EnumType.STRING)
-    private UserType userType; // Tipo de usuario (consumidor/influencer)
+    private UserType userType;
     private LocalDateTime registrationDate;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private Set<Post> posts;  // Un usuario puede crear muchos posts
+    private Set<Post> posts;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private Set<Comment> comments;  // Un usuario puede hacer muchos comentarios
+    private Set<Comment> comments;
     @ManyToMany
     @JoinTable(
             name = "user_follows",
             joinColumns = @JoinColumn(name = "follower_id"),
             inverseJoinColumns = @JoinColumn(name = "followed_id")
     )
-    private Set<User> followers;  // Relación de seguidores y seguidos
+    private Set<User> followers;
     @ManyToMany(mappedBy = "likedBy")
-    private Set<Post> likedPosts; // Aquí añadimos los posts que el usuario ha dado like
+    private Set<Post> likedPosts;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private Set<FoodRating> foodRatings; // Un usuario puede calificar muchos platos
+    private Set<FoodRating> foodRatings;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private Set<RestaurantRating> restaurantRatings; // Un usuario puede calificar muchos restaurantes
+    private Set<RestaurantRating> restaurantRatings;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Set.of(new SimpleGrantedAuthority("UserType"));
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }

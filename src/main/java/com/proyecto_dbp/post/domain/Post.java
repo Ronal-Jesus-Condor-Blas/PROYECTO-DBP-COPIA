@@ -3,10 +3,11 @@ package com.proyecto_dbp.post.domain;
 import com.proyecto_dbp.comment.domain.Comment;
 import com.proyecto_dbp.user.domain.User;
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 import java.util.Set;
-
+@Data
 @Entity
 public class Post {
 

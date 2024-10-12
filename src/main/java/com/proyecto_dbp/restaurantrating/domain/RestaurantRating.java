@@ -1,5 +1,6 @@
 package com.proyecto_dbp.restaurantrating.domain;
 
+import com.proyecto_dbp.restaurant.domain.Restaurant;
 import com.proyecto_dbp.user.domain.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
@@ -10,7 +11,7 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Entity
-@Data  // Lombok generará automáticamente los getters, setters, toString, equals, y hashCode
+@Data
 public class RestaurantRating {
 
     @Id
@@ -20,13 +21,16 @@ public class RestaurantRating {
     @ManyToOne
     private User user;
 
+    @ManyToOne
+    @JoinColumn(name = "restaurant_id", nullable = false)  // Clave foránea hacia Restaurant
+    private Restaurant restaurant;  // Agrega esta línea
+
     @NotNull
     @Min(1)
     @Max(5)
-    private Integer rating;  // Calificación de 1 a 5 estrellas
+    private Integer rating;
 
-    private String comment;  // Comentario opcional
+    private String comment;
 
-    private LocalDateTime ratingDate;  // Fecha en la que se realizó la calificación
-
+    private LocalDateTime ratingDate;
 }

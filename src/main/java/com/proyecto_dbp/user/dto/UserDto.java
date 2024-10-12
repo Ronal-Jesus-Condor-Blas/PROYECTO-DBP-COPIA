@@ -10,4 +10,5 @@ public class UserDto {
     private String email;
     private String bio;
     private UserType userType;
+    private String password; // Añadir este campo
 }
