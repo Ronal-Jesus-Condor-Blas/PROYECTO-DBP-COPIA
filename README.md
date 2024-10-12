@@ -2,12 +2,12 @@
 
 ## Project Members 🤝
 
-| Name              |                                                        
-|-------------------|
-| Ronal Condor      |
-| Isaac Simeon      | 
-| Luis Barihona     | 
+| Name          |                                                        
+|---------------|
+| Ronal Condor  |
+| Isaac Simeon  | 
+| Luis Barahona | 
 
 
 ## Entity-Relationship Diagram
-![Entity-Relationship Diagram](docs/images/ModeloEntidadRelacion.png)
+
