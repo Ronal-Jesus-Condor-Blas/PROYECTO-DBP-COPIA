@@ -86,4 +86,20 @@ public class RestaurantRatingService {
         restaurantRating.setRatingDate(LocalDateTime.now());
         return restaurantRating;
     }
+
+    public RestaurantRatingResponseDto parchRestaurantRating(Long id, RestaurantRatingRequestDto restaurantRatingRequestDto) {
+        RestaurantRating restaurantRating = restaurantRatingRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("RestaurantRating no encontrado con id " + id));
+
+        if (restaurantRatingRequestDto.getRating() != null) {
+            restaurantRating.setRating(restaurantRatingRequestDto.getRating());
+        }
+
+        if (restaurantRatingRequestDto.getComment() != null) {
+            restaurantRating.setComment(restaurantRatingRequestDto.getComment());
+        }
+
+        restaurantRating = restaurantRatingRepository.save(restaurantRating);
+        return mapToDto(restaurantRating);
+    }
 }

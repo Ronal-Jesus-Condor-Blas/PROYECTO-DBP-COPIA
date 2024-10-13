@@ -37,6 +37,16 @@ public class CommentController {
         return ResponseEntity.ok(createdComment);
     }
 
+    //**
+    @PatchMapping("/{id}")
+    public ResponseEntity<CommentResponseDto> parchComment(@PathVariable Long id, @RequestBody CommentRequestDto commentRequestDto) {
+        CommentResponseDto updatedComment = commentService.updateComment(id, commentRequestDto);
+        if (updatedComment != null) {
+            return ResponseEntity.ok(updatedComment);
+        }
+        return ResponseEntity.notFound().build();
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<CommentResponseDto> updateComment(@PathVariable Long id, @RequestBody CommentRequestDto commentRequestDto) {
         CommentResponseDto updatedComment = commentService.updateComment(id, commentRequestDto);

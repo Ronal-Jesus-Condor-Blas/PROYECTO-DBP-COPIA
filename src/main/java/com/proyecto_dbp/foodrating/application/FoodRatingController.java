@@ -38,6 +38,18 @@ public class FoodRatingController {
         return ResponseEntity.ok(createdFoodRating);
     }
 
+    //patch
+    @PatchMapping("/{id}")
+    public ResponseEntity<FoodRatingResponseDto> parchFoodRating(@PathVariable Long id, @RequestBody FoodRatingRequestDto foodRatingRequestDto) {
+        FoodRatingResponseDto updatedFoodRating = foodRatingService.parchFoodRating(id, foodRatingRequestDto);
+        if (updatedFoodRating != null) {
+            return ResponseEntity.ok(updatedFoodRating);
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+
+
     @PutMapping("/{id}")
     public ResponseEntity<FoodRatingResponseDto> updateFoodRating(@PathVariable Long id, @RequestBody FoodRatingRequestDto foodRatingRequestDto) {
         FoodRatingResponseDto updatedFoodRating = foodRatingService.updateFoodRating(id, foodRatingRequestDto);

@@ -37,6 +37,15 @@ public class FoodController {
         return ResponseEntity.ok(createdFood);
     }
 
+    @PatchMapping("/{id}")
+    public ResponseEntity<FoodResponseDto> parchFood(@PathVariable Long id, @RequestBody FoodRequestDto foodRequestDto) {
+        FoodResponseDto updatedFood = foodService.parchFFood(id, foodRequestDto);
+        if (updatedFood != null) {
+            return ResponseEntity.ok(updatedFood);
+        }
+        return ResponseEntity.notFound().build();
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<FoodResponseDto> updateFood(@PathVariable Long id, @RequestBody FoodRequestDto foodRequestDto) {
         FoodResponseDto updatedFood = foodService.updateFood(id, foodRequestDto);

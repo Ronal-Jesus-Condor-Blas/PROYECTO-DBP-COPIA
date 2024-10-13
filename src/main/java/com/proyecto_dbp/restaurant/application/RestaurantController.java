@@ -37,6 +37,16 @@ public class RestaurantController {
         return ResponseEntity.ok(createdRestaurant);
     }
 
+    //**
+    @PatchMapping("/{id}")
+    public ResponseEntity<RestaurantResponseDto> parchRestaurant(@PathVariable Long id, @RequestBody RestaurantRequestDto restaurantRequestDto) {
+        RestaurantResponseDto updatedRestaurant = restaurantService.parchRestaurant(id, restaurantRequestDto);
+        if (updatedRestaurant != null) {
+            return ResponseEntity.ok(updatedRestaurant);
+        }
+        return ResponseEntity.notFound().build();
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<RestaurantResponseDto> updateRestaurant(@PathVariable Long id, @RequestBody RestaurantRequestDto restaurantRequestDto) {
         RestaurantResponseDto updatedRestaurant = restaurantService.updateRestaurant(id, restaurantRequestDto);

@@ -71,4 +71,25 @@ public class TypeFoodService {
         typeFood.setDescription(typeFoodRequestDto.getDescription());
         return typeFood;
     }
+
+    //parch
+    public TypeFoodResponseDto parchTypeFood(Long id, TypeFoodRequestDto typeFoodRequestDto) {
+        TypeFood typeFood = typeFoodRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("TypeFood not found with id " + id));
+
+        if (typeFoodRequestDto.getType() != null && !typeFoodRequestDto.getType().isEmpty()) {
+            typeFood.setType(typeFoodRequestDto.getType());
+        } else {
+            typeFood.setType(typeFood.getType());
+        }
+
+        if (typeFoodRequestDto.getDescription() != null && !typeFoodRequestDto.getDescription().isEmpty()) {
+            typeFood.setDescription(typeFoodRequestDto.getDescription());
+        } else {
+            typeFood.setDescription(typeFood.getDescription());
+        }
+
+        typeFood = typeFoodRepository.save(typeFood);
+        return mapToDto(typeFood);
+    }
 }

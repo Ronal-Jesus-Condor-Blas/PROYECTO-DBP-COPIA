@@ -37,6 +37,15 @@ public class TypeFoodController {
         return ResponseEntity.ok(createdTypeFood);
     }
 
+    @PatchMapping("/{id}")
+    public ResponseEntity<TypeFoodResponseDto> parchTypeFood(@PathVariable Long id, @RequestBody TypeFoodRequestDto typeFoodRequestDto) {
+        TypeFoodResponseDto updatedTypeFood = typeFoodService.parchTypeFood(id, typeFoodRequestDto);
+        if (updatedTypeFood != null) {
+            return ResponseEntity.ok(updatedTypeFood);
+        }
+        return ResponseEntity.notFound().build();
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<TypeFoodResponseDto> updateTypeFood(@PathVariable Long id, @RequestBody TypeFoodRequestDto typeFoodRequestDto) {
         TypeFoodResponseDto updatedTypeFood = typeFoodService.updateTypeFood(id, typeFoodRequestDto);

@@ -37,6 +37,15 @@ public class PostController {
         return ResponseEntity.ok(createdPost);
     }
 
+    @PatchMapping("/{id}")
+    public ResponseEntity<PostResponseDto> parchPost(@PathVariable Long id, @RequestBody PostRequestDto postRequestDto) {
+        PostResponseDto updatedPost = postService.updatePost(id, postRequestDto);
+        if (updatedPost != null) {
+            return ResponseEntity.ok(updatedPost);
+        }
+        return ResponseEntity.notFound().build();
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<PostResponseDto> updatePost(@PathVariable Long id, @RequestBody PostRequestDto postRequestDto) {
         PostResponseDto updatedPost = postService.updatePost(id, postRequestDto);
