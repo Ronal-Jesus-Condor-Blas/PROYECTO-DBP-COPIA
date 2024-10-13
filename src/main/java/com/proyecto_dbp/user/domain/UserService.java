@@ -7,6 +7,10 @@ import com.proyecto_dbp.user.dto.UserResponseDto;
 import com.proyecto_dbp.user.infrastructure.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -98,5 +102,19 @@ public class UserService {
         }
         user = userRepository.save(user);
         return mapToResponseDto(user);
+    }
+
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("User not found"));
+    }
+
+    @Bean(name = "UserDetailsService")
+    public UserDetailsService userDetailsService() {
+        return username -> {
+            User user = userRepository
+                    .findByEmail(username)
+                    .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+            return (UserDetails) user;
+        };
     }
 }

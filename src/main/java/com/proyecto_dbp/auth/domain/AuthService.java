@@ -1,72 +1,72 @@
 package com.proyecto_dbp.auth.domain;
 
-/*
+import com.proyecto_dbp.user.domain.Role;
+import com.proyecto_dbp.user.domain.User;
 import com.proyecto_dbp.auth.dto.JwtAuthResponse;
-import com.proyecto_dbp.auth.dto.LoginRequest;
-import com.proyecto_dbp.auth.dto.RegisterRequest;
-import com.proyecto_dbp.exception.UserAlreadyExistException;
-import com.proyecto_dbp.auth.utils.JwtTokenProvider;
-import com.proyecto_dbp.user.domain.UserService;
-import com.proyecto_dbp.user.dto.UserRequestDto;
+import com.proyecto_dbp.auth.dto.LoginReq;
+import com.proyecto_dbp.auth.dto.RegisterReq;
+import com.proyecto_dbp.auth.exceptions.UserAlreadyExistException;
+import com.proyecto_dbp.config.JwtService;
+import com.proyecto_dbp.user.infrastructure.UserRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.time.ZonedDateTime;
+import java.util.Optional;
+
 
 @Service
 public class AuthService {
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+
+    private final UserRepository userRepository;
+    private final JwtService jwtService;
+    private final PasswordEncoder passwordEncoder;
+    private final ModelMapper modelMapper;
 
     @Autowired
-    private JwtTokenProvider tokenProvider;
-
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    public JwtAuthResponse login(LoginRequest loginRequest) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        loginRequest.getEmail(),
-                        loginRequest.getPassword()
-                )
-        );
-
-        String token = tokenProvider.generateToken(authentication);
-        return new JwtAuthResponse(token);
+    public AuthService(UserRepository userRepository, JwtService jwtService, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.jwtService = jwtService;
+        this.passwordEncoder = passwordEncoder;
+        this.modelMapper = new ModelMapper();
     }
 
-    public JwtAuthResponse register(RegisterRequest registerRequest) {
-        if (userService.getUserByEmail(registerRequest.getEmail()) != null) {
-            throw new UserAlreadyExistException("User with email " + registerRequest.getEmail() + " already exists");
-        }
+    public JwtAuthResponse login(LoginReq req) {
+        Optional<User> user;
+        user = userRepository.findByEmail(req.getEmail());
 
-        UserRequestDto userRequestDto = new UserRequestDto();
-        userRequestDto.setName(registerRequest.getName());
-        userRequestDto.setEmail(registerRequest.getEmail());
-        userRequestDto.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
-        userRequestDto.setBio(registerRequest.getBio());
-        userRequestDto.setUserType(registerRequest.getUserType());
+        if (user.isEmpty()) throw new UsernameNotFoundException("Email is not registered");
 
-        userService.createUser(userRequestDto);
+        if (!passwordEncoder.matches(req.getPassword(), user.get().getPassword()))
+            throw new IllegalArgumentException("Password is incorrect");
 
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        registerRequest.getEmail(),
-                        registerRequest.getPassword()
-                )
-        );
+        JwtAuthResponse response = new JwtAuthResponse();
 
-        String token = tokenProvider.generateToken(authentication);
-        return new JwtAuthResponse(token);
+        response.setToken(jwtService.generateToken(user.get()));
+        return response;
     }
+
+    public JwtAuthResponse register(RegisterReq req) {
+        Optional<User> user = userRepository.findByEmail(req.getEmail());
+        if (user.isPresent()) throw new UserAlreadyExistException("Email already in use");
+
+        User newUser = modelMapper.map(req, User.class);
+        newUser.setPassword(passwordEncoder.encode(req.getPassword()));
+        newUser.setCreatedAt(ZonedDateTime.now());
+        newUser.setUpdatedAt(ZonedDateTime.now());
+        newUser.setRole(Role.USER);
+        //newUser.setUserType(req.getUserType());
+
+        userRepository.save(newUser);
+
+        JwtAuthResponse response = new JwtAuthResponse();
+        response.setToken(jwtService.generateToken(newUser));
+        return response;
+    }
+
+
 }
-
-
- */

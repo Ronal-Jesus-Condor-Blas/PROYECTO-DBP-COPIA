@@ -1,32 +1,31 @@
+//OK
 package com.proyecto_dbp.auth.application;
 
-/*
-import com.proyecto_dbp.auth.dto.JwtAuthResponse;
-import com.proyecto_dbp.auth.dto.LoginRequest;
-import com.proyecto_dbp.auth.dto.RegisterRequest;
 import com.proyecto_dbp.auth.domain.AuthService;
+import com.proyecto_dbp.auth.dto.JwtAuthResponse;
+import com.proyecto_dbp.auth.dto.LoginReq;
+import com.proyecto_dbp.auth.dto.RegisterReq;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/auth")
-public class AuthController {
+public class AuthController{
 
     @Autowired
     private AuthService authService;
 
     @PostMapping("/login")
-    public ResponseEntity<JwtAuthResponse> login(@RequestBody LoginRequest loginRequest) {
-        JwtAuthResponse jwtAuthResponse = authService.login(loginRequest);
-        return ResponseEntity.ok(jwtAuthResponse);
+    public ResponseEntity<JwtAuthResponse> login(@RequestBody LoginReq req){
+        return ResponseEntity.ok(authService.login(req));
     }
 
     @PostMapping("/register")
-    public ResponseEntity<JwtAuthResponse> register(@RequestBody RegisterRequest registerRequest) {
-        JwtAuthResponse jwtAuthResponse = authService.register(registerRequest);
-        return ResponseEntity.ok(jwtAuthResponse);
+    public ResponseEntity<JwtAuthResponse> register(@RequestBody RegisterReq req){
+        return ResponseEntity.ok(authService.register(req));
     }
 }
-
- */
