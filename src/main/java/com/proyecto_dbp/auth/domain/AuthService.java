@@ -1,5 +1,6 @@
 package com.proyecto_dbp.auth.domain;
 
+/*
 import com.proyecto_dbp.auth.dto.JwtAuthResponse;
 import com.proyecto_dbp.auth.dto.LoginRequest;
 import com.proyecto_dbp.auth.dto.RegisterRequest;
@@ -66,3 +67,6 @@ public class AuthService {
         return new JwtAuthResponse(token);
     }
 }
+
+
+ */
