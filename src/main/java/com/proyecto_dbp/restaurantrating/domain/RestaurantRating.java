@@ -33,5 +33,5 @@ public class RestaurantRating {
     private String comment;
 
 
-    private LocalDateTime ratingDate;
+    private LocalDateTime ratingDate = LocalDateTime.now();
 }
