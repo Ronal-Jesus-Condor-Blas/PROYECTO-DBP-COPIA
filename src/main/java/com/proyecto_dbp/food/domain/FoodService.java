@@ -2,6 +2,7 @@ package com.proyecto_dbp.food.domain;
 
 import com.proyecto_dbp.exception.ResourceNotFoundException;
 import com.proyecto_dbp.exception.ValidationException;
+import com.proyecto_dbp.food.dto.FoodDTO;
 import com.proyecto_dbp.food.dto.FoodPatchRequestDto;
 import com.proyecto_dbp.food.dto.FoodRequestDto;
 import com.proyecto_dbp.food.dto.FoodResponseDto;
@@ -132,5 +133,21 @@ public class FoodService {
 
         food = foodRepository.save(food);
         return mapToDto(food);
+    }
+
+    //Métodos cruzados
+    public List<FoodDTO> getFoodsByRestaurantId(Long restaurantId) {
+        List<Food> foods = foodRepository.findByRestaurantRestaurantId(restaurantId);
+        return foods.stream().map(this::convertToDTO).collect(Collectors.toList());
+    }
+
+    private FoodDTO convertToDTO(Food food) {
+        FoodDTO foodDTO = new FoodDTO();
+        foodDTO.setFoodId(food.getFoodId());
+        foodDTO.setName(food.getName());
+        foodDTO.setPrice(food.getPrice());
+        foodDTO.setAverageRating(food.getAverageRating());
+        foodDTO.setStatus(food.getStatus().name());
+        return foodDTO;
     }
 }
