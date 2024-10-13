@@ -32,5 +32,6 @@ public class RestaurantRating {
 
     private String comment;
 
+
     private LocalDateTime ratingDate;
 }

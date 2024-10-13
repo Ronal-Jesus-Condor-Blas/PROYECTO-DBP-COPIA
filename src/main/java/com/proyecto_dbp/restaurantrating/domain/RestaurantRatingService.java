@@ -10,6 +10,7 @@ import com.proyecto_dbp.user.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -81,6 +82,8 @@ public class RestaurantRatingService {
         Restaurant restaurant = new Restaurant();
         restaurant.setRestaurantId(restaurantRatingRequestDto.getRestaurantId());
         restaurantRating.setRestaurant(restaurant);
+        //
+        restaurantRating.setRatingDate(LocalDateTime.now());
         return restaurantRating;
     }
 }

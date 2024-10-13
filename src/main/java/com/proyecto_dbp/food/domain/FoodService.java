@@ -5,9 +5,12 @@ import com.proyecto_dbp.exception.ValidationException;
 import com.proyecto_dbp.food.dto.FoodRequestDto;
 import com.proyecto_dbp.food.dto.FoodResponseDto;
 import com.proyecto_dbp.food.infrastructure.FoodRepository;
+import com.proyecto_dbp.restaurant.domain.Restaurant;
+import com.proyecto_dbp.restaurant.infrastructure.RestaurantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,6 +19,9 @@ public class FoodService {
 
     @Autowired
     private FoodRepository foodRepository;
+
+    @Autowired
+    private RestaurantRepository restaurantRepository;
 
     public FoodResponseDto getFoodById(Long id) {
         Food food = foodRepository.findById(id)
@@ -46,6 +52,7 @@ public class FoodService {
         food.setName(foodRequestDto.getName());
         food.setPrice(foodRequestDto.getPrice());
         food.setStatus(foodRequestDto.getStatus());
+        food.setRestaurant(getRestaurantById(foodRequestDto.getRestaurantId()));
         food = foodRepository.save(food);
         return mapToDto(food);
     }
@@ -63,7 +70,7 @@ public class FoodService {
         foodResponseDto.setName(food.getName());
         foodResponseDto.setPrice(food.getPrice());
         foodResponseDto.setStatus(food.getStatus());
-        foodResponseDto.setAverageRating(food.getAverageRating());
+        //foodResponseDto.setAverageRating(food.getAverageRating());
         foodResponseDto.setCreatedDate(food.getCreatedDate());
         return foodResponseDto;
     }
@@ -73,6 +80,14 @@ public class FoodService {
         food.setName(foodRequestDto.getName());
         food.setPrice(foodRequestDto.getPrice());
         food.setStatus(foodRequestDto.getStatus());
+        food.setRestaurant(getRestaurantById(foodRequestDto.getRestaurantId()));  // Set the restaurant
+        //**
+        food.setCreatedDate(LocalDateTime.now());
         return food;
+    }
+
+    private Restaurant getRestaurantById(Long restaurantId) {
+        return restaurantRepository.findById(restaurantId)
+                .orElseThrow(() -> new ResourceNotFoundException("Restaurant not found with id " + restaurantId));
     }
 }

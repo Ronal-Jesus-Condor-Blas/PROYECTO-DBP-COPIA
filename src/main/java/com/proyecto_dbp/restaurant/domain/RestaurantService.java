@@ -8,6 +8,7 @@ import com.proyecto_dbp.restaurant.infrastructure.RestaurantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -63,7 +64,7 @@ public class RestaurantService {
         restaurantResponseDto.setName(restaurant.getName());
         restaurantResponseDto.setLocation(restaurant.getLocation());
         restaurantResponseDto.setStatus(restaurant.getStatus());
-        restaurantResponseDto.setAverageRating(restaurant.getAverageRating());
+        //restaurantResponseDto.setAverageRating(restaurant.getAverageRating());
         restaurantResponseDto.setCreatedDate(restaurant.getCreatedDate());
         return restaurantResponseDto;
     }
@@ -73,6 +74,7 @@ public class RestaurantService {
         restaurant.setName(restaurantRequestDto.getName());
         restaurant.setLocation(restaurantRequestDto.getLocation());
         restaurant.setStatus(restaurantRequestDto.getStatus());
+        restaurant.setCreatedDate(LocalDateTime.now());
         return restaurant;
     }
 }

@@ -8,5 +8,8 @@ import java.util.List;
 
 @Repository
 public interface FoodRatingRepository extends JpaRepository<FoodRating, Long> {
-    List<FoodRating> findByFoodFoodId(Long foodId);
+    List<FoodRating> findByFoodFoodId(Long foodId);  // Correct method name
+
+    // Remove the incorrect method
+    // List<FoodRating> findByFoodId(Long foodId);
 }

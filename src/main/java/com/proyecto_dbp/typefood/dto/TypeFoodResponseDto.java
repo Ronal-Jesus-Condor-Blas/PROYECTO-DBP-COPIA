@@ -6,4 +6,5 @@ import lombok.Data;
 public class TypeFoodResponseDto {
     private Long typeFoodId;
     private String type;
+    private String description;
 }
