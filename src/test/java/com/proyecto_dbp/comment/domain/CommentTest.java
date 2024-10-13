@@ -8,8 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class CommentTest {
     private Comment comment;
@@ -56,5 +55,17 @@ public class CommentTest {
     public void testUpdateCommentContent() {
         comment.setContent("Updated comment content");
         assertEquals("Updated comment content", comment.getContent());
+    }
+
+    @Test
+    public void testCommentUserRelationship() {
+        assertNotNull(comment.getUser());
+        assertEquals(user.getUserId(), comment.getUser().getUserId());
+    }
+
+    @Test
+    public void testCommentPostRelationship() {
+        assertNotNull(comment.getPost());
+        assertEquals(post.getPostId(), comment.getPost().getPostId());
     }
 }

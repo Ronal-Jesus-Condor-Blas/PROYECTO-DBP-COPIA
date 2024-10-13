@@ -1,5 +1,7 @@
 package com.proyecto_dbp.user.domain;
 
+import com.proyecto_dbp.comment.domain.Comment;
+import com.proyecto_dbp.post.domain.Post;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -7,8 +9,7 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class UserTest {
     private User user;
@@ -20,7 +21,7 @@ public class UserTest {
         user.setEmail("user1@example.com");
         user.setPassword("password1");
         user.setBio("This is a bio");
-        user.setUserType(UserType.CONSUMER);
+        user.setUserType(UserType.INFLUENCER);
         user.setRegistrationDate(LocalDateTime.now());
 
         User follower1 = new User();
@@ -52,7 +53,7 @@ public class UserTest {
         assertEquals("user1@example.com", user.getEmail());
         assertEquals("password1", user.getPassword());
         assertEquals("This is a bio", user.getBio());
-        assertEquals(UserType.CONSUMER, user.getUserType());
+        assertEquals(UserType.INFLUENCER, user.getUserType());
         assertEquals(LocalDateTime.now().getDayOfWeek(), user.getRegistrationDate().getDayOfWeek());
         assertEquals(LocalDateTime.now().getYear(), user.getRegistrationDate().getYear());
         assertEquals(LocalDateTime.now().getMonth(), user.getRegistrationDate().getMonth());
@@ -80,5 +81,48 @@ public class UserTest {
         followers.remove(followers.iterator().next());
         user.setFollowers(followers);
         assertEquals(1, user.getFollowers().size());
+    }
+
+    @Test
+    public void testUserPosts() {
+        Post post = new Post();
+        post.setTitle("Post Title");
+        post.setContent("Post Content");
+        post.setUser(user);
+
+        Set<Post> posts = new HashSet<>();
+        posts.add(post);
+        user.setPosts(posts);
+
+        assertEquals(1, user.getPosts().size());
+        assertEquals("Post Title", user.getPosts().iterator().next().getTitle());
+    }
+
+    @Test
+    public void testUserComments() {
+        Comment comment = new Comment();
+        comment.setContent("Comment Content");
+        comment.setUser(user);
+
+        Set<Comment> comments = new HashSet<>();
+        comments.add(comment);
+        user.setComments(comments);
+
+        assertEquals(1, user.getComments().size());
+        assertEquals("Comment Content", user.getComments().iterator().next().getContent());
+    }
+
+    @Test
+    public void testUserLikedPosts() {
+        Post likedPost = new Post();
+        likedPost.setTitle("Liked Post Title");
+        likedPost.setContent("Liked Post Content");
+
+        Set<Post> likedPosts = new HashSet<>();
+        likedPosts.add(likedPost);
+        user.setLikedPosts(likedPosts);
+
+        assertEquals(1, user.getLikedPosts().size());
+        assertEquals("Liked Post Title", user.getLikedPosts().iterator().next().getTitle());
     }
 }
