@@ -110,6 +110,11 @@ public class RestaurantRatingService {
         return restaurantRatings.stream().map(this::convertToDTO).collect(Collectors.toList());
     }
 
+    public List<RestaurantRatingDTO> getCommentsByRestaurantId(Long restaurantId) {
+        List<RestaurantRating> comments = restaurantRatingRepository.findByRestaurantRestaurantId(restaurantId);
+        return comments.stream().map(this::convertToDTO).collect(Collectors.toList());
+    }
+
     private RestaurantRatingDTO convertToDTO(RestaurantRating restaurantRating) {
         RestaurantRatingDTO restaurantRatingDTO = new RestaurantRatingDTO();
         restaurantRatingDTO.setRatingId(restaurantRating.getRatingId());

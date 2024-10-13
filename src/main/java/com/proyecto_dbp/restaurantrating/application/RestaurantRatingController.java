@@ -69,4 +69,9 @@ public class RestaurantRatingController {
         return restaurantRatingService.getRestaurantRatingsByUserId(userId);
     }
 
+    @GetMapping("/restaurants/{restaurantId}/comments")
+    public List<RestaurantRatingDTO> getCommentsByRestaurantId(@PathVariable Long restaurantId) {
+        return restaurantRatingService.getCommentsByRestaurantId(restaurantId);
+    }
+
 }
