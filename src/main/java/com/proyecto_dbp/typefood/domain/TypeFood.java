@@ -1,13 +1,13 @@
 package com.proyecto_dbp.typefood.domain;
 
 
-import com.proyecto_dbp.email.NewRestaurantEvent;
 import com.proyecto_dbp.restaurant.domain.Restaurant;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -24,8 +24,9 @@ public class TypeFood {
 
     private String description; // Descripción del tipo de comida
 
-    @ManyToMany(mappedBy = "typesOfFood")
-    private Set<Restaurant> restaurants; // Relación con Restaurant
+    @ManyToOne
+    @JoinColumn(name = "restaurant_id")
+    private Restaurant restaurant;
 
 
     public String getType() {
@@ -34,12 +35,5 @@ public class TypeFood {
 
 
 
-    // Getters and Setters
-    public Set<Restaurant> getRestaurants() {
-        return restaurants;
-    }
 
-    public void setRestaurants(Set<Restaurant> restaurants) {
-        this.restaurants = restaurants;
-    }
 }

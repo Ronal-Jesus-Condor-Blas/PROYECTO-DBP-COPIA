@@ -57,14 +57,8 @@ public class Restaurant {
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
     private Set<RestaurantRating> ratings;  // Un restaurante puede recibir varias calificaciones
 
-    @ManyToMany
-    @JoinTable(
-            name = "restaurant_type_food",
-            joinColumns = @JoinColumn(name = "restaurant_id"),
-            inverseJoinColumns = @JoinColumn(name = "type_food_id")
-    )
-    private Set<TypeFood> typesOfFood;  // Un restaurante ofrece varios tipos de cocina
-
+    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
+    private Set<TypeFood> typesOfFood;
 
 
 }
