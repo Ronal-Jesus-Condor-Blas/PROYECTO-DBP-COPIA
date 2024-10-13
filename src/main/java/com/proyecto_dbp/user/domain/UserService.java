@@ -4,7 +4,6 @@ import com.proyecto_dbp.exception.ResourceNotFoundException;
 import com.proyecto_dbp.exception.ValidationException;
 import com.proyecto_dbp.user.dto.UserRequestDto;
 import com.proyecto_dbp.user.dto.UserResponseDto;
-import com.proyecto_dbp.user.event.UserRegisteredEvent;
 import com.proyecto_dbp.user.infrastructure.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -31,13 +30,16 @@ public class UserService {
         return mapToResponseDto(user);
     }
 
+    //modificado para enviar email
     public UserResponseDto createUser(UserRequestDto userRequestDto) {
         if (userRepository.findByEmail(userRequestDto.getEmail()).isPresent()) {
             throw new ValidationException("Email already in use");
         }
         User user = mapToEntity(userRequestDto);
         user = userRepository.save(user);
-        eventPublisher.publishEvent(new UserRegisteredEvent(user));
+
+        //UserResponseDto userResponseDto = mapToResponseDto(user); //se agrego para la siguiente linea
+        //eventPublisher.publishEvent(new UserRegisteredEvent(userResponseDto)); //era user y no dto
         return mapToResponseDto(user);
     }
 
