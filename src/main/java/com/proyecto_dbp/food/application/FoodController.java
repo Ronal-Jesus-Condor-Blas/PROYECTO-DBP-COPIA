@@ -1,6 +1,7 @@
 package com.proyecto_dbp.food.application;
 
 import com.proyecto_dbp.food.domain.FoodService;
+import com.proyecto_dbp.food.dto.FoodDTO;
 import com.proyecto_dbp.food.dto.FoodPatchRequestDto;
 import com.proyecto_dbp.food.dto.FoodRequestDto;
 import com.proyecto_dbp.food.dto.FoodResponseDto;
@@ -60,5 +61,11 @@ public class FoodController {
     public ResponseEntity<Void> deleteFood(@PathVariable Long id) {
         foodService.deleteFood(id);
         return ResponseEntity.noContent().build();
+    }
+
+    //MÉTODOS CRUZADOS
+    @GetMapping("/restaurants/{restaurantId}/foods")
+    public List<FoodDTO> getFoodsByRestaurantId(@PathVariable Long restaurantId) {
+        return foodService.getFoodsByRestaurantId(restaurantId);
     }
 }
