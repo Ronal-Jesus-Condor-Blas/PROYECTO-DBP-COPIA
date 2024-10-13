@@ -2,6 +2,7 @@
 package com.proyecto_dbp.restaurantrating.application;
 
 import com.proyecto_dbp.restaurantrating.domain.RestaurantRatingService;
+import com.proyecto_dbp.restaurantrating.dto.RestaurantRatingDTO;
 import com.proyecto_dbp.restaurantrating.dto.RestaurantRatingRequestDto;
 import com.proyecto_dbp.restaurantrating.dto.RestaurantRatingResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,4 +62,11 @@ public class RestaurantRatingController {
         restaurantRatingService.deleteRestaurantRating(id);
         return ResponseEntity.noContent().build();
     }
+
+    //MPETODO O PETICIONES CRUZADAS
+    @GetMapping("/users/{userId}/restaurantratings")
+    public List<RestaurantRatingDTO> getRestaurantRatingsByUserId(@PathVariable Long userId) {
+        return restaurantRatingService.getRestaurantRatingsByUserId(userId);
+    }
+
 }
