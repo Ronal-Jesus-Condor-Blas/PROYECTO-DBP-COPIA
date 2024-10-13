@@ -10,6 +10,7 @@ import com.proyecto_dbp.user.domain.User;
 import com.proyecto_dbp.user.infrastructure.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -71,6 +72,7 @@ public class PostService {
         post = postRepository.save(post);
         return mapToDto(post);
     }
+
 
     public void deletePost(Long id) {
         if (!postRepository.existsById(id)) {

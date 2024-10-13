@@ -12,6 +12,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import com.proyecto_dbp.post.infrastructure.PostRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserService {
@@ -21,6 +23,9 @@ public class UserService {
 
     @Autowired
     private ApplicationEventPublisher eventPublisher;
+
+    @Autowired
+    private PostRepository  postRepository;
 
     public UserResponseDto getUserById(Long userId) {
         User user = userRepository.findById(userId)
@@ -58,10 +63,25 @@ public class UserService {
         return mapToResponseDto(user);
     }
 
+    @Transactional
     public void deleteUser(Long userId) {
-        if (!userRepository.existsById(userId)) {
-            throw new ResourceNotFoundException("User not found with id " + userId);
-        }
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id " + userId));
+
+        // Delete related posts
+        postRepository.deleteByUserUserId(userId);
+
+        // Clear other relationships if necessary
+        user.getComments().clear();
+        user.getFollowers().clear();
+        user.getLikedPosts().clear();
+        user.getFoodRatings().clear();
+        user.getRestaurantRatings().clear();
+
+        // Save the user to update the database
+        userRepository.save(user);
+
+        // Delete the user
         userRepository.deleteById(userId);
     }
 
