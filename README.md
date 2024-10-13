@@ -98,7 +98,8 @@ Resolver esta necesidad es crucial porque la comida no solo satisface una necesi
    - **OkHttp**: Cliente HTTP utilizado para realizar peticiones HTTP de manera eficiente.
 
 ## Modelo de Entidades
-aqui va la imagen del diagrama
+![Entity-Relationship Diagram](docs/images/Comment.png)
+
 ### Descripción: 📋
 | Entidad          | Descripción                                                                                                                                               | Relaciones                                                                                                   |
 |------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------|
