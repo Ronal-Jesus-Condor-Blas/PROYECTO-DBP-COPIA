@@ -28,6 +28,7 @@ public class TypeFoodService {
         return typeFoods.stream().map(this::mapToDto).collect(Collectors.toList());
     }
 
+    //
     public TypeFoodResponseDto createTypeFood(TypeFoodRequestDto typeFoodRequestDto) {
         if (typeFoodRequestDto.getType() == null || typeFoodRequestDto.getType().isEmpty()) {
             throw new ValidationException("Type cannot be null or empty");
@@ -36,6 +37,7 @@ public class TypeFoodService {
         typeFood = typeFoodRepository.save(typeFood);
         return mapToDto(typeFood);
     }
+    //
 
     public TypeFoodResponseDto updateTypeFood(Long id, TypeFoodRequestDto typeFoodRequestDto) {
         TypeFood typeFood = typeFoodRepository.findById(id)
@@ -59,12 +61,14 @@ public class TypeFoodService {
         TypeFoodResponseDto typeFoodResponseDto = new TypeFoodResponseDto();
         typeFoodResponseDto.setTypeFoodId(typeFood.getTypeFoodId());
         typeFoodResponseDto.setType(typeFood.getType());
+        typeFoodResponseDto.setDescription(typeFood.getDescription());
         return typeFoodResponseDto;
     }
 
     private TypeFood mapToEntity(TypeFoodRequestDto typeFoodRequestDto) {
         TypeFood typeFood = new TypeFood();
         typeFood.setType(typeFoodRequestDto.getType());
+        typeFood.setDescription(typeFoodRequestDto.getDescription());
         return typeFood;
     }
 }

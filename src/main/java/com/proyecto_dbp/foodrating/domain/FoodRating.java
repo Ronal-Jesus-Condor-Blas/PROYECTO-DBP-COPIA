@@ -34,4 +34,14 @@ public class FoodRating {
     @ManyToOne
     private User user;
 
+
+
+    public void setUserId(Long userId) {
+        this.user = new User();
+        this.user.setUserId(userId);
+    }
+
+    public Long getUserId() {
+        return this.user.getUserId();
+    }
 }

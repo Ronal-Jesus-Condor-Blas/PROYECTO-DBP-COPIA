@@ -5,4 +5,5 @@ import lombok.Data;
 @Data
 public class TypeFoodRequestDto {
     private String type;
+    private String description;
 }

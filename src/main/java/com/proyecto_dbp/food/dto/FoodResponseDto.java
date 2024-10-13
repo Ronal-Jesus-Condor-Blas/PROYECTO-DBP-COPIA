@@ -11,6 +11,6 @@ public class FoodResponseDto {
     private String name;
     private Double price;
     private FoodStatus status;
-    private Double averageRating;
+    //private Double averageRating; //crear otros DTos para get, etc
     private LocalDateTime createdDate;
 }

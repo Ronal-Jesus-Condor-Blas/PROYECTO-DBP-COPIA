@@ -8,4 +8,5 @@ public class FoodRequestDto {
     private String name;
     private Double price;
     private FoodStatus status;
+    private Long restaurantId;
 }

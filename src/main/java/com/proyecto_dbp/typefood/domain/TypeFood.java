@@ -20,5 +20,7 @@ public class TypeFood {
     @NotNull
     @Size(max = 100)
     private String type; // Tipo de comida (e.g. italiana, mexicana, peruana)
+
+    private String description; // Descripción del tipo de comida
     // Getters and Setters
 }
