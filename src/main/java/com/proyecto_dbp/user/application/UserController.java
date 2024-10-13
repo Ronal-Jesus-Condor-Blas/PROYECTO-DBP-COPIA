@@ -74,16 +74,5 @@ public class UserController {
         return ResponseEntity.status(403).build(); // Forbidden
     }
 
-    //Post for email
-    @PostMapping("/email")
-    public ResponseEntity<UserResponseDto> emailcreateUser(@RequestBody UserRequestDto userRequestDto) {
-        //lanzar evento "mandar un correo de bienvenida"
-        //crea el codigo para mandar el correo
 
-        //crear usuario OK
-        UserResponseDto createdUser = userService.createUser(userRequestDto);
-        //lanzar evento "mandar un correo de bienvenida"
-        applicationEventPublisher.publishEvent(new HelloEmailEvent(createdUser.getUserId(), createdUser.getEmail(), createdUser.getName(), createdUser.getUserType())); //email
-        return ResponseEntity.ok(createdUser);
-    }
 }
