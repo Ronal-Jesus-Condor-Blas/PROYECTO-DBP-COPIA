@@ -30,6 +30,10 @@ public class RestaurantService {
     }
 
     public RestaurantResponseDto createRestaurant(RestaurantRequestDto restaurantRequestDto) {
+        if (restaurantRepository.findByEmail(restaurantRequestDto.getEmail()).isPresent()) {
+            throw new ValidationException("Email already in use");
+        }
+
         if (restaurantRequestDto.getName() == null || restaurantRequestDto.getName().isEmpty()) {
             throw new ValidationException("Name cannot be null or empty");
         }

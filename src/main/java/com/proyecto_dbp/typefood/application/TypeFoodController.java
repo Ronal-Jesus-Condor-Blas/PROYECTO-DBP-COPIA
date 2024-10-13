@@ -1,6 +1,7 @@
 package com.proyecto_dbp.typefood.application;
 
 import com.proyecto_dbp.typefood.domain.TypeFoodService;
+import com.proyecto_dbp.typefood.dto.TypeFoodDTO;
 import com.proyecto_dbp.typefood.dto.TypeFoodRequestDto;
 import com.proyecto_dbp.typefood.dto.TypeFoodResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,4 +61,8 @@ public class TypeFoodController {
         typeFoodService.deleteTypeFood(id);
         return ResponseEntity.noContent().build();
     }
+
+    //MÉTODOS O PETICIONES CRUZADAS
+
+
 }
