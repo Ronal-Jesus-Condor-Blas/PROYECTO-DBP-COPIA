@@ -34,4 +34,8 @@ public class RestaurantRating {
 
 
     private LocalDateTime ratingDate = LocalDateTime.now();
+
+    public Long getRatingId() {
+        return restaurantRatingId;
+    }
 }

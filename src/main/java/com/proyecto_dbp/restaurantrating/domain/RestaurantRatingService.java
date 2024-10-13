@@ -3,6 +3,7 @@ package com.proyecto_dbp.restaurantrating.domain;
 import com.proyecto_dbp.exception.ResourceNotFoundException;
 import com.proyecto_dbp.exception.ValidationException;
 import com.proyecto_dbp.restaurant.domain.Restaurant;
+import com.proyecto_dbp.restaurantrating.dto.RestaurantRatingDTO;
 import com.proyecto_dbp.restaurantrating.dto.RestaurantRatingRequestDto;
 import com.proyecto_dbp.restaurantrating.dto.RestaurantRatingResponseDto;
 import com.proyecto_dbp.restaurantrating.infrastructure.RestaurantRatingRepository;
@@ -101,5 +102,26 @@ public class RestaurantRatingService {
 
         restaurantRating = restaurantRatingRepository.save(restaurantRating);
         return mapToDto(restaurantRating);
+    }
+
+    //MÉTODOS O PETICIONES CRUZADAS
+    public List<RestaurantRatingDTO> getRestaurantRatingsByUserId(Long userId) {
+        List<RestaurantRating> restaurantRatings = restaurantRatingRepository.findByUserUserId(userId);
+        return restaurantRatings.stream().map(this::convertToDTO).collect(Collectors.toList());
+    }
+
+    public List<RestaurantRatingDTO> getCommentsByRestaurantId(Long restaurantId) {
+        List<RestaurantRating> comments = restaurantRatingRepository.findByRestaurantRestaurantId(restaurantId);
+        return comments.stream().map(this::convertToDTO).collect(Collectors.toList());
+    }
+
+    private RestaurantRatingDTO convertToDTO(RestaurantRating restaurantRating) {
+        RestaurantRatingDTO restaurantRatingDTO = new RestaurantRatingDTO();
+        restaurantRatingDTO.setRatingId(restaurantRating.getRatingId());
+        restaurantRatingDTO.setRating(restaurantRating.getRating());
+        restaurantRatingDTO.setComment(restaurantRating.getComment());
+        restaurantRatingDTO.setRestaurantId(restaurantRating.getRestaurant().getRestaurantId());
+        restaurantRatingDTO.setUserId(restaurantRating.getUser().getUserId());
+        return restaurantRatingDTO;
     }
 }

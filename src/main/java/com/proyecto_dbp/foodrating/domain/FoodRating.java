@@ -44,4 +44,8 @@ public class FoodRating {
     public Long getUserId() {
         return this.user.getUserId();
     }
+
+    public Long getRatingId() {
+        return foodRatingId;
+    }
 }
