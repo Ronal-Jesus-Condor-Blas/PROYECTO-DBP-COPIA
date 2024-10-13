@@ -24,15 +24,16 @@ public class EmailListenerUser {
     //private userResponseDto userResponseDto;
     private UserResponseDto userResponseDto;
 
+    //Método que rellene los placeholders del html
     public String generarEmailHtml(String userId, String email, String nombre, String rol) {
-        //llamar a la imagen logo1.webp
+        // Llamar a la imagen logo1.webp
 
         String emailHtml = "<!DOCTYPE html>\n" +
                 "<html>\n" +
                 "<head>\n" +
                 "  <meta charset='UTF-8'>\n" +
                 "  <meta name='viewport' content='width=device-width, initial-scale=1.0'>\n" +
-                "  <title>¡Hola " + nombre + " Bienvenid@ a FoodTales!</title>\n" +
+                "  <title>¡Hola {{nombre}} Bienvenid@ a FoodTales!</title>\n" +
                 "  <style>\n" +
                 "    body {\n" +
                 "      font-family: Arial, sans-serif;\n" +
@@ -66,19 +67,26 @@ public class EmailListenerUser {
                 "</head>\n" +
                 "<body>\n" +
                 "  <div class='container'>\n" +
-                "    <h1>¡Hola " + nombre + ", bienvenid@ a FoodTales!</h1>\n" +
+                "    <section>\n" +
+                "      <img src='cid:logo4' alt='FoodTales Logo' style='max-width: 100%; height: auto;'>\n" +
+                "    </section>\n" +
+                "    <h1>¡Hola {{nombre}}, bienvenid@ a FoodTales!</h1>\n" +
                 "    <h2>Tu registro ha sido exitoso</h2>\n" +
-                "    <p>Tu userId es: <strong>" + userId + "</strong></p>\n" +
-                "    <p>Te has registrado con este email: <strong>" + email + "</strong></p>\n" +
-                "    <p>Te has registrado con el rol de: <strong>" + rol + "</strong></p>\n" +
+                "    <p>Tu userId es: <strong>{{userId}}</strong></p>\n" +
+                "    <p>Te has registrado con este email: <strong>{{email}}</strong></p>\n" +
+                "    <p>Te has registrado con el rol de: <strong>{{rol}}</strong></p>\n" +
                 "    <p>¡Comparte con la comunidad tu preferencia en comidas!</p>\n" +
-                "    <li>Logo: <img src=\"/logo1.webp\" alt=\"FoodTales Logo\"></li>\n" +
                 "    <div class='footer'>\n" +
                 "      <p>&copy; 2024 FoodTales. Todos los derechos reservados.</p>\n" +
                 "    </div>\n" +
                 "  </div>\n" +
                 "</body>\n" +
                 "</html>";
+
+        emailHtml = emailHtml.replace("{{userId}}", userId)
+                .replace("{{nombre}}", nombre)
+                .replace("{{email}}", email)
+                .replace("{{rol}}", rol);
 
         return emailHtml;
     }
