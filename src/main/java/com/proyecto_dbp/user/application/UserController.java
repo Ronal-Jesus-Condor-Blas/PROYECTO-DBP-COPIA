@@ -36,6 +36,9 @@ public class UserController {
         //crea el codigo para mandar el correo
 
         UserResponseDto createdUser = userService.createUser(userRequestDto);
+        //lanzar evento "mandar un correo de bienvenida"
+        applicationEventPublisher.publishEvent(new HelloEmailEvent(createdUser.getUserId(), createdUser.getEmail(), createdUser.getName(), createdUser.getUserType())); //email
+
         return ResponseEntity.ok(createdUser);
     }
 

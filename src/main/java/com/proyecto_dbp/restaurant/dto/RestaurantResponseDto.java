@@ -13,4 +13,7 @@ public class RestaurantResponseDto {
     private RestaurantStatus status;
     //private Double averageRating; //Crear otros DTos para mostrar este atributo en get, etc
     private LocalDateTime createdDate;
+
+    //Agregar email para recibir confirmaciones de "foodrating"
+    private String email;
 }

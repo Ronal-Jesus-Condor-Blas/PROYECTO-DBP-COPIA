@@ -11,6 +11,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.checkerframework.common.aliasing.qual.Unique;
 
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -26,6 +27,10 @@ public class Restaurant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long restaurantId;
+
+    //agregar email apra recibir confirmaciones de "foodrating"
+
+    private String email;
 
     @NotNull
     @Size(max = 100)

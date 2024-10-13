@@ -8,4 +8,6 @@ public class RestaurantRequestDto {
     private String name;
     private String location;
     private RestaurantStatus status;
+    //Agregar email para recibir confirmaciones de "foodrating"
+    private String email;
 }
