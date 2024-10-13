@@ -4,6 +4,7 @@ import com.proyecto_dbp.exception.ResourceNotFoundException;
 import com.proyecto_dbp.exception.ValidationException;
 import com.proyecto_dbp.food.domain.Food;
 import com.proyecto_dbp.food.infrastructure.FoodRepository;
+import com.proyecto_dbp.foodrating.dto.FoodRatingDTO;
 import com.proyecto_dbp.foodrating.dto.FoodRatingRequestDto;
 import com.proyecto_dbp.foodrating.dto.FoodRatingResponseDto;
 import com.proyecto_dbp.foodrating.infrastructure.FoodRatingRepository;
@@ -109,6 +110,22 @@ public class FoodRatingService {
 
         foodRating = foodRatingRepository.save(foodRating);
         return mapToDto(foodRating);
+    }
+
+    //MÉTODO O PETICIONES CRUZADAS
+    public List<FoodRatingDTO> getFoodRatingsByUserId(Long userId) {
+        List<FoodRating> foodRatings = foodRatingRepository.findByUserUserId(userId);
+        return foodRatings.stream().map(this::convertToDTO).collect(Collectors.toList());
+    }
+
+    private FoodRatingDTO convertToDTO(FoodRating foodRating) {
+        FoodRatingDTO foodRatingDTO = new FoodRatingDTO();
+        foodRatingDTO.setRatingId(foodRating.getRatingId());
+        foodRatingDTO.setRating(foodRating.getRating());
+        foodRatingDTO.setComment(foodRating.getComment());
+        foodRatingDTO.setFoodId(foodRating.getFood().getFoodId());
+        foodRatingDTO.setUserId(foodRating.getUser().getUserId());
+        return foodRatingDTO;
     }
 
 }

@@ -1,6 +1,7 @@
 package com.proyecto_dbp.foodrating.application;
 
 import com.proyecto_dbp.foodrating.domain.FoodRatingService;
+import com.proyecto_dbp.foodrating.dto.FoodRatingDTO;
 import com.proyecto_dbp.foodrating.dto.FoodRatingRequestDto;
 import com.proyecto_dbp.foodrating.dto.FoodRatingResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,4 +65,11 @@ public class FoodRatingController {
         foodRatingService.deleteFoodRating(id);
         return ResponseEntity.noContent().build();
     }
+
+    //MÉTODO O PETICIONES CRUZADAS
+    @GetMapping("/users/{userId}/foodratings")
+    public List<FoodRatingDTO> getFoodRatingsByUserId(@PathVariable Long userId) {
+        return foodRatingService.getFoodRatingsByUserId(userId);
+    }
+
 }
