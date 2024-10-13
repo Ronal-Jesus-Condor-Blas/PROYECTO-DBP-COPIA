@@ -5,6 +5,8 @@ import com.proyecto_dbp.restaurantrating.domain.RestaurantRating;
 import com.proyecto_dbp.typefood.domain.TypeFood;
 import com.proyecto_dbp.user.domain.User;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
@@ -30,6 +32,10 @@ public class Restaurant {
 
     //agregar email apra recibir confirmaciones de "foodrating"
 
+    @NotNull
+    @NotBlank
+    @Email
+    @Column(unique = true)
     private String email;
 
     @NotNull

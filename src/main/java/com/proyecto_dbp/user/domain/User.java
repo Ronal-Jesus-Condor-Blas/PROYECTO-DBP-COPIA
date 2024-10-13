@@ -29,6 +29,7 @@ public class User {
     private Long userId;
     @NotNull
     private String name;
+
     @NotNull
     @NotBlank
     @Email

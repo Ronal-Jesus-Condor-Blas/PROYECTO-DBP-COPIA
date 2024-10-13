@@ -119,7 +119,10 @@ public class FoodService {
                 if (!statusStr.equals("AVAILABLE") && !statusStr.equals("UNAVAILABLE")) {
                     throw new ValidationException("Status must be either 'AVAILABLE' or 'UNAVAILABLE'");
                 }
+
+
                 status = FoodStatus.valueOf(statusStr);
+
             food.setStatus(status);
         } else {
             food.setStatus(food.getStatus());
