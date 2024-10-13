@@ -70,4 +70,14 @@ public class TypeFoodController {
         List<TypeFood> typesOfFood = typeFoodService.getTypesOfFoodByRestaurantId(restaurantId);
         return ResponseEntity.ok(typesOfFood);
     }
+
+    /* 1
+    @GetMapping("/restaurant/{restaurantId}")
+    public ResponseEntity<List<TypeFoodResponseDto>> getTypesOfFoodByRestaurantId(@PathVariable Long restaurantId) {
+        List<TypeFoodResponseDto> typesOfFood = typeFoodService.getTypesOfFoodByRestaurantId(restaurantId);
+        return ResponseEntity.ok(typesOfFood);
+    }
+
+
+     */
 }
