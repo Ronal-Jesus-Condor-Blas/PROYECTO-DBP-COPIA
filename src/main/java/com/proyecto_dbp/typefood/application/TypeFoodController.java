@@ -1,5 +1,6 @@
 package com.proyecto_dbp.typefood.application;
 
+import com.proyecto_dbp.typefood.domain.TypeFood;
 import com.proyecto_dbp.typefood.domain.TypeFoodService;
 import com.proyecto_dbp.typefood.dto.TypeFoodDTO;
 import com.proyecto_dbp.typefood.dto.TypeFoodRequestDto;
@@ -39,8 +40,8 @@ public class TypeFoodController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<TypeFoodResponseDto> parchTypeFood(@PathVariable Long id, @RequestBody TypeFoodRequestDto typeFoodRequestDto) {
-        TypeFoodResponseDto updatedTypeFood = typeFoodService.parchTypeFood(id, typeFoodRequestDto);
+    public ResponseEntity<TypeFoodResponseDto> patchTypeFood(@PathVariable Long id, @RequestBody TypeFoodRequestDto typeFoodRequestDto) {
+        TypeFoodResponseDto updatedTypeFood = typeFoodService.patchTypeFood(id, typeFoodRequestDto);
         if (updatedTypeFood != null) {
             return ResponseEntity.ok(updatedTypeFood);
         }
@@ -64,5 +65,9 @@ public class TypeFoodController {
 
     //MÉTODOS O PETICIONES CRUZADAS
 
-
+    @GetMapping("/restaurant/{restaurantId}")
+    public ResponseEntity<List<TypeFood>> getTypesOfFoodByRestaurantId(@PathVariable Long restaurantId) {
+        List<TypeFood> typesOfFood = typeFoodService.getTypesOfFoodByRestaurantId(restaurantId);
+        return ResponseEntity.ok(typesOfFood);
+    }
 }
