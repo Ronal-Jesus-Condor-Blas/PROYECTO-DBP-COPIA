@@ -44,15 +44,29 @@ public class PostService {
         return mapToDto(post);
     }
 
+    //patch
     public PostResponseDto updatePost(Long id, PostRequestDto postRequestDto) {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Post not found with id " + id));
-        if (postRequestDto.getContent() == null || postRequestDto.getContent().isEmpty()) {
-            throw new ValidationException("Content cannot be null or empty");
+
+        if (postRequestDto.getContent() != null && !postRequestDto.getContent().isEmpty()) {
+            post.setContent(postRequestDto.getContent());
         }
-        post.setContent(postRequestDto.getContent());
-        post.setImage(postRequestDto.getImage());
-        post.setStatus(postRequestDto.getStatus());
+        if (postRequestDto.getImage() != null) {
+            post.setImage(postRequestDto.getImage());
+        }
+        //si no se envia una nueva imagen, entonces usar la imagen que ya tenia
+        //post.setImage(ir a la base de datos y traer la imagen correspondiente al id)
+        else {
+            post.setImage(post.getImage());
+        }
+        if (postRequestDto.getStatus() != null) {
+            post.setStatus(postRequestDto.getStatus());
+        }
+        else {
+            post.setStatus(post.getStatus());
+        }
+
         post = postRepository.save(post);
         return mapToDto(post);
     }

@@ -77,4 +77,32 @@ public class RestaurantService {
         restaurant.setCreatedDate(LocalDateTime.now());
         return restaurant;
     }
+
+    //parch
+    public RestaurantResponseDto parchRestaurant(Long id, RestaurantRequestDto restaurantRequestDto) {
+        Restaurant restaurant = restaurantRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Restaurant not found with id " + id));
+
+        if (restaurantRequestDto.getName() != null && !restaurantRequestDto.getName().isEmpty()) {
+            restaurant.setName(restaurantRequestDto.getName());
+        } else {
+            restaurant.setName(restaurant.getName());
+        }
+
+        if (restaurantRequestDto.getLocation() != null && !restaurantRequestDto.getLocation().isEmpty()) {
+            restaurant.setLocation(restaurantRequestDto.getLocation());
+        } else {
+            restaurant.setLocation(restaurant.getLocation());
+        }
+
+        if (restaurantRequestDto.getStatus() != null) {
+            restaurant.setStatus(restaurantRequestDto.getStatus());
+        } else {
+            restaurant.setStatus(restaurant.getStatus());
+        }
+
+        restaurant = restaurantRepository.save(restaurant);
+        return mapToDto(restaurant);
+    }
+
 }

@@ -29,7 +29,15 @@ public class UserController {
         return ResponseEntity.ok(createdUser);
     }
 
-    //
+    //Code for patch mapping
+    @PatchMapping("/{id}")
+    public ResponseEntity<UserResponseDto> updateUserPartial(@PathVariable Long id, @RequestBody UserRequestDto userRequestDto) {
+        UserResponseDto updatedUser = userService.updateUserPartial(id, userRequestDto);
+        if (updatedUser != null) {
+            return ResponseEntity.ok(updatedUser);
+        }
+        return ResponseEntity.notFound().build();
+    }
 
     @PutMapping("/{id}")
     public ResponseEntity<UserResponseDto> updateUser(@PathVariable Long id, @RequestBody UserRequestDto userRequestDto) {

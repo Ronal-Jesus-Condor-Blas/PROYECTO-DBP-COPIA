@@ -84,4 +84,31 @@ public class FoodRatingService {
         foodRating = foodRatingRepository.save(foodRating);
         return mapToDto(foodRating);
     }
+
+    public FoodRatingResponseDto parchFoodRating(Long id, FoodRatingRequestDto foodRatingRequestDto) {
+        FoodRating foodRating = foodRatingRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("FoodRating not found with id " + id));
+
+        if (foodRatingRequestDto.getUserId() != null) {
+            foodRating.setUserId(foodRatingRequestDto.getUserId());
+        } else {
+            foodRating.setUserId(foodRating.getUserId());
+        }
+
+        if (foodRatingRequestDto.getRating() != null) {
+            foodRating.setRating(foodRatingRequestDto.getRating());
+        } else {
+            foodRating.setRating(foodRating.getRating());
+        }
+
+        if (foodRatingRequestDto.getComment() != null) {
+            foodRating.setComment(foodRatingRequestDto.getComment());
+        } else {
+            foodRating.setComment(foodRating.getComment());
+        }
+
+        foodRating = foodRatingRepository.save(foodRating);
+        return mapToDto(foodRating);
+    }
+
 }

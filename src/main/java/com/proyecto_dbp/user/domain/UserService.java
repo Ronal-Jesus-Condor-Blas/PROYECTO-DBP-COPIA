@@ -78,4 +78,23 @@ public class UserService {
         user.setPassword(userRequestDto.getPassword());
         return user;
     }
+    //Code for patch mapping
+    public UserResponseDto updateUserPartial(Long id, UserRequestDto userRequestDto) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id " + id));
+        if (userRequestDto.getName() != null) {
+            user.setName(userRequestDto.getName());
+        }
+        if (userRequestDto.getEmail() != null) {
+            user.setEmail(userRequestDto.getEmail());
+        }
+        if (userRequestDto.getBio() != null) {
+            user.setBio(userRequestDto.getBio());
+        }
+        if (userRequestDto.getUserType() != null) {
+            user.setUserType(userRequestDto.getUserType());
+        }
+        user = userRepository.save(user);
+        return mapToResponseDto(user);
+    }
 }

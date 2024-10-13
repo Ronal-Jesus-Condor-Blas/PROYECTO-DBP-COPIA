@@ -90,4 +90,41 @@ public class FoodService {
         return restaurantRepository.findById(restaurantId)
                 .orElseThrow(() -> new ResourceNotFoundException("Restaurant not found with id " + restaurantId));
     }
+
+    //parch
+    public FoodResponseDto parchFFood(Long id, FoodRequestDto foodRequestDto) {
+        Food food = foodRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Food not found with id " + id));
+
+        if (foodRequestDto.getName() != null) {
+            food.setName(foodRequestDto.getName());
+        } else {
+            food.setName(food.getName());
+        }
+
+        if (foodRequestDto.getPrice() != null) {
+            food.setPrice(foodRequestDto.getPrice());
+        } else {
+            food.setPrice(food.getPrice());
+        }
+
+        if (foodRequestDto.getStatus() != null) {
+            FoodStatus status = foodRequestDto.getStatus();
+            if (status != FoodStatus.AVAILABLE && status != FoodStatus.UNAVAILABLE) {
+                throw new ValidationException("Status must be either 'AVAILABLE' or 'UNAVAILABLE'");
+            }
+            food.setStatus(status);
+        } else {
+            food.setStatus(food.getStatus());
+        }
+
+        if (foodRequestDto.getRestaurantId() != null) {
+            food.setRestaurant(getRestaurantById(foodRequestDto.getRestaurantId()));
+        } else {
+            food.setRestaurant(food.getRestaurant());
+        }
+
+        food = foodRepository.save(food);
+        return mapToDto(food);
+    }
 }
