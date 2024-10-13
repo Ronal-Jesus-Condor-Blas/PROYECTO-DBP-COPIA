@@ -13,4 +13,9 @@ public class PostResponseDto {
     private String image;
     private LocalDateTime createdDate;
     private PostStatus status;
+    private String title;
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 }

@@ -9,4 +9,10 @@ public class PostRequestDto {
     private String content;
     private String image;
     private PostStatus status;
+    private String title;
+
+
+    public String getTitle() {
+        return title;
+    }
 }

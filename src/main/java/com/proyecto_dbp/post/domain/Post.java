@@ -24,6 +24,8 @@ public class Post {
 
     private LocalDateTime createdDate;
 
+    private String title;
+
     @Enumerated(EnumType.STRING)
     private PostStatus status;  // Estado del post (activo/eliminado)
 
@@ -37,4 +39,8 @@ public class Post {
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
     private Set<User> likedBy; // Usuarios que han dado like a este post
+
+    public String getTitle() {
+        return title;
+    }
 }

@@ -1,6 +1,7 @@
 package com.proyecto_dbp.post.application;
 
 import com.proyecto_dbp.post.domain.PostService;
+import com.proyecto_dbp.post.dto.PostDTO;
 import com.proyecto_dbp.post.dto.PostRequestDto;
 import com.proyecto_dbp.post.dto.PostResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,4 +61,11 @@ public class PostController {
         postService.deletePost(id);
         return ResponseEntity.noContent().build();
     }
+
+    //MÉTODO O PETICIONES CRUZADAS
+    @GetMapping("/users/{userId}/posts")
+    public List<PostDTO> getPostsByUserId(@PathVariable Long userId) {
+        return postService.getPostsByUserId(userId);
+    }
+
 }
