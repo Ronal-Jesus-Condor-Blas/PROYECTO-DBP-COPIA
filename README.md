@@ -5,11 +5,11 @@
 ## Project Members 🤝
 
 
-| Name          | GitHub User                                                           | Email                                                       |
-|---------------|-----------------------------------------------------------------------|-------------------------------------------------------------|
-| Ronal Condor  | [Ronal-Jesus-Condor-Blas](https://github.com/Ronal-Jesus-Condor-Blas) | [ronal.condor@utec.edu.pe](mailto:ronal.condor@utec.edu.pe) |
-| Isaac Simeón  | [Isaac181222](https://github.com/Isaac181222)                         | [isaac.simeon@utec.edu.pe](mailto:isaac.simeon@utec.edu.pe) |
-| Luis Barahona | [LuissBarahona](https://github.com/LuissBarahona)                     | [luis.barahona@utec.edu.pe](mailto:luis.barahona@utec.edu.pe)|
+| Name                                  | GitHub User                                                           | Email                                                         |
+|---------------------------------------|-----------------------------------------------------------------------|---------------------------------------------------------------|
+| Ronal Jesus Condor Blas               | [Ronal-Jesus-Condor-Blas](https://github.com/Ronal-Jesus-Condor-Blas) | [ronal.condor@utec.edu.pe](mailto:ronal.condor@utec.edu.pe)   |
+| Isaac Emanuel Javier Simeón Sarmiento | [Isaac181222](https://github.com/Isaac181222)                         | [isaac.simeon@utec.edu.pe](mailto:isaac.simeon@utec.edu.pe)   |
+| Luis David Barahona Valdivieso        | [LuissBarahona](https://github.com/LuissBarahona)                     | [luis.barahona@utec.edu.pe](mailto:luis.barahona@utec.edu.pe) |
 
 
 ## Introducción.
