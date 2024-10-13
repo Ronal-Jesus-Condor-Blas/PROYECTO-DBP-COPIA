@@ -21,6 +21,7 @@
 - [Eventos y Asincronía](#eventos-y-asincronía)
 - [GitHub](#github)
 - [Conclusiones](#conclusiones)
+- [Apéndice](#apéndice)
 
 ## Introducción
 
@@ -147,3 +148,10 @@ Durante el desarrollo de la aplicación, aprendimos la importancia de planificar
 ### Trabajo Futuro: 🚀
 En el futuro, nos gustaría agregar más funciones, como filtros para buscar comida según preferencias personales o recomendaciones en tiempo real. También planeamos ofrecer recompensas para los usuarios más activos y hacer alianzas con restaurantes para ofrecer descuentos exclusivos a la comunidad.
 
+## Apéndice
+### Licencia
+Foodtales está bajo la licencia MIT.
+
+### Referencias
+- Documentación de Node.js: https://nodejs.org/
+- Documentación de PostgreSQL: https://www.postgresql.org/docs/
