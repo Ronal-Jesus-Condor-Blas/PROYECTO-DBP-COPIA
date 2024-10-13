@@ -57,9 +57,17 @@ public class TypeFoodService {
         typeFoodRepository.deleteById(id);
     }
 
+
     public List<TypeFood> getTypesOfFoodByRestaurantId(Long restaurantId) {
         return typeFoodRepository.findByRestaurantRestaurantId(restaurantId);
     }
+
+    /*3
+    public List<TypeFoodResponseDto> getTypesOfFoodByRestaurantId(Long restaurantId) {
+        return typeFoodRepository.findByRestaurantRestaurantId(restaurantId);
+    }
+
+     */
 
 
 

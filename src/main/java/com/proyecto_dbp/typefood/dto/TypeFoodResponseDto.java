@@ -11,5 +11,6 @@ public class TypeFoodResponseDto {
     private Long typeFoodId;
     private String type;
     private String description;
+    //private Long restaurantId;//2
 
 }
