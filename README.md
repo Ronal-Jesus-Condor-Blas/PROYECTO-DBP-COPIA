@@ -11,6 +11,17 @@
 | Isaac Emanuel Javier Simeón Sarmiento | [Isaac181222](https://github.com/Isaac181222)                         | [isaac.simeon@utec.edu.pe](mailto:isaac.simeon@utec.edu.pe)   |
 | Luis David Barahona Valdivieso        | [LuissBarahona](https://github.com/LuissBarahona)                     | [luis.barahona@utec.edu.pe](mailto:luis.barahona@utec.edu.pe) |
 
+## Índice
+- [Introducción](#introducción)
+- [Identificación del Problema o Necesidad](#identificación-del-problema-o-necesidad)
+- [Descripción de la Solución](#descripción-de-la-solución)
+- [Modelo de Entidades](#modelo-de-entidades)
+- [Testing y Manejo de Errores](#testing-y-manejo-de-errores)
+- [Medidas de Seguridad Implementadas](#medidas-de-seguridad-implementadas)
+- [Eventos y Asincronía](#eventos-y-asincronía)
+- [GitHub](#github)
+- [Conclusión](#conclusión)
+- [Apéndices](#apéndices)
 
 ## Introducción. 📖
 ### Contexto: ✏️
