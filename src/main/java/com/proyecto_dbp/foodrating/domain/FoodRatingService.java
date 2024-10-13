@@ -1,6 +1,7 @@
 package com.proyecto_dbp.foodrating.domain;
 
 import com.proyecto_dbp.exception.ResourceNotFoundException;
+import com.proyecto_dbp.exception.ValidationException;
 import com.proyecto_dbp.food.domain.Food;
 import com.proyecto_dbp.food.infrastructure.FoodRepository;
 import com.proyecto_dbp.foodrating.dto.FoodRatingRequestDto;
@@ -25,7 +26,11 @@ public class FoodRatingService {
     public FoodRatingResponseDto createFoodRating(FoodRatingRequestDto foodRatingRequestDto) {
         Food food = foodRepository.findById(foodRatingRequestDto.getFoodId())
                 .orElseThrow(() -> new ResourceNotFoundException("Food not found with id " + foodRatingRequestDto.getFoodId()));
-
+        //**
+        if (foodRatingRequestDto.getRating() < 1 || foodRatingRequestDto.getRating() > 5) {
+            throw new ValidationException("La calificación debe estar entre 1 y 5");
+        }
+        //**
         FoodRating foodRating = mapToEntity(foodRatingRequestDto);
         foodRating.setFood(food);  // Set the food entity
         foodRating = foodRatingRepository.save(foodRating);
