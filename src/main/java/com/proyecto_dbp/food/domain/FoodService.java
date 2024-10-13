@@ -2,6 +2,7 @@ package com.proyecto_dbp.food.domain;
 
 import com.proyecto_dbp.exception.ResourceNotFoundException;
 import com.proyecto_dbp.exception.ValidationException;
+import com.proyecto_dbp.food.dto.FoodPatchRequestDto;
 import com.proyecto_dbp.food.dto.FoodRequestDto;
 import com.proyecto_dbp.food.dto.FoodResponseDto;
 import com.proyecto_dbp.food.infrastructure.FoodRepository;
@@ -92,7 +93,7 @@ public class FoodService {
     }
 
     //parch
-    public FoodResponseDto parchFFood(Long id, FoodRequestDto foodRequestDto) {
+    public FoodResponseDto parchFFood(Long id, FoodPatchRequestDto foodRequestDto) {
         Food food = foodRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Food not found with id " + id));
 
@@ -108,11 +109,16 @@ public class FoodService {
             food.setPrice(food.getPrice());
         }
 
+
         if (foodRequestDto.getStatus() != null) {
-            FoodStatus status = foodRequestDto.getStatus();
-            if (status != FoodStatus.AVAILABLE && status != FoodStatus.UNAVAILABLE) {
-                throw new ValidationException("Status must be either 'AVAILABLE' or 'UNAVAILABLE'");
-            }
+            String statusStr = foodRequestDto.getStatus().toUpperCase();
+            FoodStatus status;
+
+                //if statusStr is not 'AVAILABLE' or 'UNAVAILABLE' it will throw an exception before to set the status
+                if (!statusStr.equals("AVAILABLE") && !statusStr.equals("UNAVAILABLE")) {
+                    throw new ValidationException("Status must be either 'AVAILABLE' or 'UNAVAILABLE'");
+                }
+                status = FoodStatus.valueOf(statusStr);
             food.setStatus(status);
         } else {
             food.setStatus(food.getStatus());

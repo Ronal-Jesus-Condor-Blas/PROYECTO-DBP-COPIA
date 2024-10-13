@@ -1,7 +1,5 @@
 package com.proyecto_dbp.food.domain;
 
-
-
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -13,8 +11,7 @@ import java.io.IOException;
 public class FoodStatusDeserializer extends JsonDeserializer<FoodStatus> {
 
     @Override
-    public FoodStatus deserialize(JsonParser p, DeserializationContext ctxt)
-            throws IOException, JsonProcessingException {
+    public FoodStatus deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonProcessingException {
         String value = p.getText().toUpperCase();
         try {
             return FoodStatus.valueOf(value);

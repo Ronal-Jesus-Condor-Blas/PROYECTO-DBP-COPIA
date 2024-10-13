@@ -1,6 +1,7 @@
 package com.proyecto_dbp.food.application;
 
 import com.proyecto_dbp.food.domain.FoodService;
+import com.proyecto_dbp.food.dto.FoodPatchRequestDto;
 import com.proyecto_dbp.food.dto.FoodRequestDto;
 import com.proyecto_dbp.food.dto.FoodResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +40,7 @@ public class FoodController {
 
     @PatchMapping("/{id}")
     public ResponseEntity<FoodResponseDto> parchFood(@PathVariable Long id, @RequestBody FoodRequestDto foodRequestDto) {
-        FoodResponseDto updatedFood = foodService.parchFFood(id, foodRequestDto);
+        FoodResponseDto updatedFood = foodService.parchFFood(id, new FoodPatchRequestDto());
         if (updatedFood != null) {
             return ResponseEntity.ok(updatedFood);
         }
