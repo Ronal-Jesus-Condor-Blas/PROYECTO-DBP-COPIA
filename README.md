@@ -99,14 +99,16 @@ Resolver esta necesidad es crucial porque la comida no solo satisface una necesi
 ## Modelo de Entidades. ⚙️
 aqui va la imagen del diagrama
 ### Descripción: 📋
-| Entidad    | Descripción                                                                                                                                                    | Relaciones                                                                                                           |
-|------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------|
-| **User**   | Representa a un usuario de la plataforma. Incluye atributos como nombre, correo electrónico, contraseña, biografía, y tipo de usuario (UserType).                | - Un usuario puede tener varios **posts** y **comentarios**.<br> - Relación muchos a muchos con otros **usuarios** (seguidores). |
-| **Post**   | Representa una publicación realizada por un usuario, donde comparte su experiencia o reseña sobre algún restaurante o comida.                                   | - Un **post** es creado por un **usuario**.<br> - Un **post** puede tener múltiples **comentarios**.                             |
-| **Comment**| Representa un comentario hecho por un usuario en una publicación (post). Incluye el contenido del comentario y la fecha en que se realizó.                      | - Un **comentario** pertenece a un **post** y es hecho por un **usuario**.                                                      |
-| **Food**   | Representa un plato de comida. Incluye atributos como nombre, precio, calificación promedio y estado (disponible o no disponible).                              | - Un **plato** puede estar asociado con un **restaurante**.<br> - Puede recibir varias **valoraciones de comida**.                |
-| **Restaurant** | Representa un restaurante en la plataforma, incluyendo su nombre, ubicación, y estado.                                                                         | - Un **restaurante** puede tener varios **platos**.<br> - Los **usuarios** pueden hacer valoraciones a los **restaurantes**.     |
-
+| Entidad          | Descripción                                                                                                                                               | Relaciones                                                                                                   |
+|------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------|
+| **User**         | Representa a un usuario de la plataforma. Incluye atributos como nombre, correo electrónico, contraseña, biografía, y tipo de usuario (UserType).            | - Un usuario puede tener varios **posts** y **comentarios**.<br> - Relación muchos a muchos con otros **usuarios** (seguidores). |
+| **Post**         | Representa una publicación realizada por un usuario, donde comparte su experiencia o reseña sobre algún restaurante o comida.                               | - Un **post** es creado por un **usuario**.<br> - Un **post** puede tener múltiples **comentarios**.         |
+| **Comment**      | Representa un comentario hecho por un usuario en una publicación (post). Incluye el contenido del comentario y la fecha en que se realizó.                  | - Un **comentario** pertenece a un **post** y es hecho por un **usuario**.                                   |
+| **Food**         | Representa un plato de comida. Incluye atributos como nombre, precio, calificación promedio y estado (disponible o no disponible).                          | - Un **plato** puede estar asociado con un **restaurante**.<br> - Puede recibir varias **valoraciones de comida**. |
+| **Restaurant**   | Representa un restaurante en la plataforma, incluyendo su nombre, ubicación, y estado.                                                                     | - Un **restaurante** puede tener varios **platos**.<br> - Los **usuarios** pueden hacer valoraciones a los **restaurantes**.     |
+| **TypeFood**     | Representa un tipo de comida, como italiana, mexicana, o peruana. Incluye el nombre y una descripción opcional.                                             | - Relación muchos a muchos con **restaurantes**.<br> Un restaurante puede tener varios tipos de comida.       |
+| **FoodRating**   | Representa una calificación que un usuario realiza sobre un plato específico, con una puntuación del 1 al 5 y un comentario opcional.                        | - Relación muchos a uno con **plato (Food)** y **usuario**.                                                  |
+| **RestaurantRating** | Representa una calificación que un usuario realiza sobre un restaurante, con una puntuación del 1 al 5 y un comentario opcional.                            | - Relación muchos a uno con **restaurante (Restaurant)** y **usuario**.                                       |
 ## Testing y Manejo de Errores. ❌➡️✅
 ### Niveles de Testing Realizados: 🛠️
 
@@ -120,9 +122,23 @@ aqui va la imagen del diagrama
 ### Prevención de Vulnerabilidades: 🚨
 
 ## Eventos y Asincronía. 📧
+En **Foodtales**, los eventos y la asincronía juegan un papel importante para mejorar la eficiencia del sistema, especialmente en tareas que no requieren una respuesta inmediata. El envío de correos electrónicos es uno de los principales ejemplos de este enfoque. En lugar de procesar estas tareas de manera síncrona, lo cual podría generar demoras innecesarias para el usuario, se ejecutan en segundo plano, permitiendo que la experiencia sea más fluida.
+### Casos de uso del envío de correos electrónicos:
+1. **Registro de un Nuevo Usuario:**
+   - Cuando un nuevo usuario se registra en la plataforma, se dispara un evento que envía de forma asíncrona un correo electrónico de bienvenida. Este correo confirma el registro del usuario y proporciona información útil para comenzar a interactuar en la plataforma. El envío de este correo en segundo plano permite que el usuario complete el proceso de registro sin esperas innecesarias.
 
+2. **Registro de un Nuevo Restaurante:**
+   - Cuando un restaurante es registrado por un usuario, también se genera un evento asíncrono que envía un correo electrónico de bienvenida al propietario del restaurante. Este correo está diseñado para proporcionar instrucciones sobre cómo gestionar el perfil del restaurante dentro de la plataforma, destacando herramientas que pueden ayudar a mejorar su visibilidad frente a otros usuarios. Este evento se ejecuta sin afectar la fluidez de la experiencia del usuario, mejorando la escalabilidad del sistema.
 ## GitHub 🖥️🔧
+El desarrollo de **Foodtales** se gestionó de forma colaborativa utilizando **GitHub**, donde se emplearon ramas, issues y pull requests para organizar y revisar el trabajo de todo el equipo.
 
+- **Ramas (Branches):** Cada nueva funcionalidad o corrección de errores se desarrolló en ramas independientes para evitar conflictos en la rama principal (`main`). Esto permitió que los miembros del equipo trabajaran en paralelo de manera eficiente.
+
+- **Issues:** Se utilizaron issues para asignar tareas, reportar errores y gestionar el progreso del proyecto. Las etiquetas (`bug`, `enhancement`) ayudaron a priorizar las tareas y mantener el enfoque en lo más importante.
+
+- **Pull Requests:** Antes de fusionar cualquier cambio en la rama principal, se creaba un pull request. Esto permitió que los cambios fueran revisados y discutidos por el equipo, asegurando la calidad del código antes de su integración.
+
+Este flujo de trabajo colaborativo permitió mantener el proyecto organizado, mejorar la calidad del código mediante revisiones, y asegurar una integración continua sin problemas.
 ## Conclusiones: 📌
 ### Logros del Proyecto: 📝
 El desarrollo de Foodtales ha permitido crear una plataforma que resuelve una necesidad significativa al ofrecer un espacio donde los usuarios pueden encontrar y compartir experiencias culinarias de forma auténtica. Se ha logrado integrar funcionalidades para la publicación de reseñas y discusión abierta entre amantes de la comida. Esto ha contribuido a la construcción de una comunidad activa en torno a la gastronomía, facilitando el descubrimiento de nuevos lugares y el crecimiento de pequeños negocios locales.
