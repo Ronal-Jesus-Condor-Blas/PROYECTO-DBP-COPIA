@@ -1,5 +1,6 @@
 package com.proyecto_dbp.auth.application;
 
+/*
 import com.proyecto_dbp.auth.dto.JwtAuthResponse;
 import com.proyecto_dbp.auth.dto.LoginRequest;
 import com.proyecto_dbp.auth.dto.RegisterRequest;
@@ -27,3 +28,5 @@ public class AuthController {
         return ResponseEntity.ok(jwtAuthResponse);
     }
 }
+
+ */

@@ -1,5 +1,6 @@
 package com.proyecto_dbp.auth.utils;
 
+/*
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,3 +30,5 @@ public class JwtTokenProvider {
                 .compact();
     }
 }
+*
+ */
