@@ -9,8 +9,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class FoodTest {
     private Food food;
@@ -98,5 +97,23 @@ public class FoodTest {
         food.setFoodRatings(foodRatings);
 
         assertEquals(1, food.getFoodRatings().size());
+    }
+
+    @Test
+    public void testUpdateFoodName() {
+        food.setName("Updated Food Name");
+        assertEquals("Updated Food Name", food.getName());
+    }
+
+    @Test
+    public void testUpdateFoodPrice() {
+        food.setPrice(12.99);
+        assertEquals(12.99, food.getPrice());
+    }
+
+    @Test
+    public void testUpdateFoodStatus() {
+        food.setStatus(FoodStatus.UNAVAILABLE);
+        assertEquals(FoodStatus.UNAVAILABLE, food.getStatus());
     }
 }

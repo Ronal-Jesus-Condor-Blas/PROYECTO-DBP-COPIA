@@ -10,8 +10,7 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class RestaurantTest {
     private Restaurant restaurant;
@@ -22,6 +21,7 @@ public class RestaurantTest {
         restaurant.setRestaurantId(1L);
         restaurant.setName("Test Restaurant");
         restaurant.setLocation("123 Test St");
+        restaurant.setEmail("testrestaurant@example.com");
         restaurant.setAverageRating(4.5);
         restaurant.setCreatedDate(LocalDateTime.now());
         restaurant.setStatus(RestaurantStatus.OPEN);
@@ -80,6 +80,7 @@ public class RestaurantTest {
         assertEquals(1L, restaurant.getRestaurantId());
         assertEquals("Test Restaurant", restaurant.getName());
         assertEquals("123 Test St", restaurant.getLocation());
+        assertEquals("testrestaurant@example.com", restaurant.getEmail());
         assertEquals(4.5, restaurant.getAverageRating());
         assertEquals(LocalDateTime.now().getDayOfWeek(), restaurant.getCreatedDate().getDayOfWeek());
         assertEquals(LocalDateTime.now().getYear(), restaurant.getCreatedDate().getYear());
@@ -136,5 +137,17 @@ public class RestaurantTest {
         restaurant.setRatings(ratings);
 
         assertEquals(1, restaurant.getRatings().size());
+    }
+
+    @Test
+    public void testUpdateRestaurantEmail() {
+        restaurant.setEmail("newemail@example.com");
+        assertEquals("newemail@example.com", restaurant.getEmail());
+    }
+
+    @Test
+    public void testUpdateRestaurantStatus() {
+        restaurant.setStatus(RestaurantStatus.CLOSED);
+        assertEquals(RestaurantStatus.CLOSED, restaurant.getStatus());
     }
 }
