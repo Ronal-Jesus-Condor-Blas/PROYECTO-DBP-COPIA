@@ -9,8 +9,7 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class PostTest {
     private Post post;
@@ -31,6 +30,7 @@ public class PostTest {
         post.setImage("image.jpg");
         post.setCreatedDate(LocalDateTime.now());
         post.setStatus(PostStatus.ACTIVE);
+        post.setTitle("Test Title");
 
         Comment comment1 = new Comment();
         comment1.setCommentId(1L);
@@ -46,6 +46,19 @@ public class PostTest {
         comments.add(comment1);
         comments.add(comment2);
         post.setComments(comments);
+
+        User likedUser1 = new User();
+        likedUser1.setUserId(2L);
+        likedUser1.setName("Liked User 1");
+
+        User likedUser2 = new User();
+        likedUser2.setUserId(3L);
+        likedUser2.setName("Liked User 2");
+
+        Set<User> likedBy = new HashSet<>();
+        likedBy.add(likedUser1);
+        likedBy.add(likedUser2);
+        post.setLikedBy(likedBy);
     }
 
     @Test
@@ -59,7 +72,9 @@ public class PostTest {
         assertEquals(LocalDateTime.now().getYear(), post.getCreatedDate().getYear());
         assertEquals(LocalDateTime.now().getMonth(), post.getCreatedDate().getMonth());
         assertEquals(PostStatus.ACTIVE, post.getStatus());
+        assertEquals("Test Title", post.getTitle());
         assertEquals(2, post.getComments().size());
+        assertEquals(2, post.getLikedBy().size());
     }
 
     @Test
@@ -80,5 +95,42 @@ public class PostTest {
         comments.removeIf(comment -> comment.getCommentId().equals(1L));
         post.setComments(comments);
         assertEquals(1, post.getComments().size());
+    }
+
+    @Test
+    public void testAddLike() {
+        User likedUser3 = new User();
+        likedUser3.setUserId(4L);
+        likedUser3.setName("Liked User 3");
+        Set<User> likedBy = new HashSet<>(post.getLikedBy());
+        likedBy.add(likedUser3);
+        post.setLikedBy(likedBy);
+        assertEquals(3, post.getLikedBy().size());
+    }
+
+    @Test
+    public void testRemoveLike() {
+        Set<User> likedBy = new HashSet<>(post.getLikedBy());
+        likedBy.removeIf(user -> user.getUserId().equals(2L));
+        post.setLikedBy(likedBy);
+        assertEquals(1, post.getLikedBy().size());
+    }
+
+    @Test
+    public void testUpdatePostContent() {
+        post.setContent("Updated post content");
+        assertEquals("Updated post content", post.getContent());
+    }
+
+    @Test
+    public void testUpdatePostTitle() {
+        post.setTitle("Updated Title");
+        assertEquals("Updated Title", post.getTitle());
+    }
+
+    @Test
+    public void testUpdatePostStatus() {
+        post.setStatus(PostStatus.DELETED);
+        assertEquals(PostStatus.DELETED, post.getStatus());
     }
 }

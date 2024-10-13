@@ -7,8 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class FoodRatingTest {
     private FoodRating foodRating;
@@ -57,5 +56,30 @@ public class FoodRatingTest {
     public void testSetRating() {
         foodRating.setRating(4);
         assertEquals(4, foodRating.getRating());
+    }
+
+    @Test
+    public void testSetUser() {
+        User newUser = new User();
+        newUser.setUserId(2L);
+        newUser.setEmail("newuser@example.com");
+        foodRating.setUser(newUser);
+        assertEquals(newUser, foodRating.getUser());
+    }
+
+    @Test
+    public void testSetFood() {
+        Food newFood = new Food();
+        newFood.setFoodId(2L);
+        newFood.setName("New Test Food");
+        foodRating.setFood(newFood);
+        assertEquals(newFood, foodRating.getFood());
+    }
+
+    @Test
+    public void testSetRatingDate() {
+        LocalDateTime newDate = LocalDateTime.of(2023, 1, 1, 12, 0);
+        foodRating.setRatingDate(newDate);
+        assertEquals(newDate, foodRating.getRatingDate());
     }
 }
