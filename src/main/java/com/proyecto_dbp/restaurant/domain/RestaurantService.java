@@ -66,6 +66,7 @@ public class RestaurantService {
         restaurantResponseDto.setStatus(restaurant.getStatus());
         //restaurantResponseDto.setAverageRating(restaurant.getAverageRating());
         restaurantResponseDto.setCreatedDate(restaurant.getCreatedDate());
+        restaurantResponseDto.setEmail(restaurant.getEmail());
         return restaurantResponseDto;
     }
 
@@ -75,6 +76,7 @@ public class RestaurantService {
         restaurant.setLocation(restaurantRequestDto.getLocation());
         restaurant.setStatus(restaurantRequestDto.getStatus());
         restaurant.setCreatedDate(LocalDateTime.now());
+        restaurant.setEmail(restaurantRequestDto.getEmail());
         return restaurant;
     }
 
