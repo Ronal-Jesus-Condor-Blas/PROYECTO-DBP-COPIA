@@ -1,8 +1,8 @@
 # Proyecto-backend:
 
-## Titulo del proyecto:"Foodtales: Discover, taste, and tell"
+## "Foodtales: Discover, taste, and tell" 💬🍽️ 👥
 
-## Nombre del Curso: CS 2031 Desarrollo Basado en Plataforma.
+## CS 2031 Desarrollo Basado en Plataforma.
 
 ## Project Members 🤝
 
