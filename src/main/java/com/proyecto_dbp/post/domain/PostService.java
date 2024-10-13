@@ -2,6 +2,7 @@ package com.proyecto_dbp.post.domain;
 
 import com.proyecto_dbp.exception.ResourceNotFoundException;
 import com.proyecto_dbp.exception.ValidationException;
+import com.proyecto_dbp.post.dto.PostDTO;
 import com.proyecto_dbp.post.dto.PostRequestDto;
 import com.proyecto_dbp.post.dto.PostResponseDto;
 import com.proyecto_dbp.post.infrastructure.PostRepository;
@@ -86,6 +87,7 @@ public class PostService {
         postResponseDto.setCreatedDate(post.getCreatedDate());
         postResponseDto.setStatus(post.getStatus());
         postResponseDto.setUserId(post.getUser().getUserId());
+        postResponseDto.setTitle(post.getTitle());
         return postResponseDto;
     }
 
@@ -94,11 +96,26 @@ public class PostService {
         post.setContent(postRequestDto.getContent());
         post.setImage(postRequestDto.getImage());
         post.setStatus(postRequestDto.getStatus());
+        post.setTitle(postRequestDto.getTitle());
 
         User user = userRepository.findById(postRequestDto.getUserId())
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id " + postRequestDto.getUserId()));
         post.setUser(user);
 
         return post;
+    }
+
+    //MÉTODO O PETICIONES CRUZADAS
+    public List<PostDTO> getPostsByUserId(Long userId) {
+        List<Post> posts = postRepository.findByUserUserId(userId);
+        return posts.stream().map(this::convertToDTO).collect(Collectors.toList());
+    }
+
+    private PostDTO convertToDTO(Post post) {
+        PostDTO postDTO = new PostDTO();
+        postDTO.setPostId(post.getPostId());
+        postDTO.setTitle(post.getTitle());
+        postDTO.setContent(post.getContent());
+        return postDTO;
     }
 }
