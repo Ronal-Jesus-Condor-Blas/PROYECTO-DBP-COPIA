@@ -20,10 +20,10 @@
 - [Medidas de Seguridad Implementadas](#medidas-de-seguridad-implementadas)
 - [Eventos y Asincronía](#eventos-y-asincronía)
 - [GitHub](#github)
-- [Conclusión](#conclusión)
-- [Apéndices](#apéndices)
+- [Conclusiones](#conclusiones)
 
-## Introducción. 📖
+## Introducción
+
 ### Contexto: ✏️
 En la actualidad, existen muchas plataformas que permiten a los usuarios buscar lugares para comer, pero pocas ofrecen un espacio donde se puedan compartir de forma auténtica las experiencias, reseñas y opiniones relacionadas con la comida. Las personas no solo buscan un lugar para comer, sino también un espacio donde puedan hablar sobre sus descubrimientos, compartir reseñas, expresar sus opiniones y explorar nuevas opciones culinarias a través de las experiencias de otros usuarios. Foodtales surge como una solución que une una red social con el mundo gastronómico, permitiendo a los usuarios encontrar lugares de comida y compartir sus vivencias con una comunidad activa.
 
@@ -33,13 +33,13 @@ b) Facilitar que los usuarios puedan escribir reseñas y compartir opiniones sob
 c) Crear un espacio para que los usuarios puedan debatir y compartir recomendaciones sobre diferentes tipos de cocina y platos.  
 d) Ofrecer herramientas para que los usuarios puedan seguir a otros amantes de la comida y explorar sus recomendaciones.  
 
-## Identificación del problema o necesidad. ❗
+## Identificación del problema o necesidad
 ### Descripción del problema: 🤔
 En la actualidad, existe una creciente demanda por experiencias gastronómicas únicas y auténticas. Sin embargo, muchas personas tienen dificultades para encontrar recomendaciones confiables y actualizadas sobre lugares de comida, especialmente en zonas menos populares. A pesar de que existen diversas plataformas de reseñas, estas suelen ser impersonales, dispersas o carecen de un enfoque específico en la experiencia completa alrededor de los alimentos. Además, los usuarios buscan más que simples calificaciones; desean una comunidad en la que puedan compartir historias y experiencias en torno a la comida.
 ### Justificación: ✅
 Resolver esta necesidad es crucial porque la comida no solo satisface una necesidad básica, sino que también representa una forma de cultura, identidad y conexión social. Foodtales permitirá a los usuarios descubrir nuevos lugares, expresar opiniones auténticas y conectarse con otros amantes de la gastronomía en un espacio interactivo. Esta plataforma fomentará la creación de una comunidad donde cada experiencia culinaria sea valorada como parte de una historia, aportando así valor tanto a consumidores como a restaurantes. Conectar personas a través de las experiencias gastronómicas no solo enriquece las recomendaciones, sino que también contribuye al crecimiento de los negocios locales.
 
-## Descripción de la solución. ✔️✔️
+## Descripción de la solución
 ### Funcionalidades Implementadas: 🛠️
 1. **Registro y Autenticación de Usuarios:**
     - Implementación de un sistema de autenticación basado en **JWT (JSON Web Tokens)**, permitiendo a los usuarios registrarse e iniciar sesión de forma segura.
@@ -96,7 +96,7 @@ Resolver esta necesidad es crucial porque la comida no solo satisface una necesi
    - **Gson**: Biblioteca de Google para el procesamiento de JSON, utilizada para la serialización y deserialización de objetos.
    - **OkHttp**: Cliente HTTP utilizado para realizar peticiones HTTP de manera eficiente.
 
-## Modelo de Entidades. ⚙️
+## Modelo de Entidades
 aqui va la imagen del diagrama
 ### Descripción: 📋
 | Entidad          | Descripción                                                                                                                                               | Relaciones                                                                                                   |
@@ -109,19 +109,19 @@ aqui va la imagen del diagrama
 | **TypeFood**     | Representa un tipo de comida, como italiana, mexicana, o peruana. Incluye el nombre y una descripción opcional.                                             | - Relación muchos a muchos con **restaurantes**.<br> Un restaurante puede tener varios tipos de comida.       |
 | **FoodRating**   | Representa una calificación que un usuario realiza sobre un plato específico, con una puntuación del 1 al 5 y un comentario opcional.                        | - Relación muchos a uno con **plato (Food)** y **usuario**.                                                  |
 | **RestaurantRating** | Representa una calificación que un usuario realiza sobre un restaurante, con una puntuación del 1 al 5 y un comentario opcional.                            | - Relación muchos a uno con **restaurante (Restaurant)** y **usuario**.                                       |
-## Testing y Manejo de Errores. ❌➡️✅
+## Testing y Manejo de Errores
 ### Niveles de Testing Realizados: 🛠️
 
 ### Resultados: 📊
 
 ### Manejo de Errores: ❌
 
-## Medidas de Seguridad Implementadas 🔒
+## Medidas de Seguridad Implementadas
 ### Seguridad de Datos: 🛡️
 
 ### Prevención de Vulnerabilidades: 🚨
 
-## Eventos y Asincronía. 📧
+## Eventos y Asincronía
 En **Foodtales**, los eventos y la asincronía juegan un papel importante para mejorar la eficiencia del sistema, especialmente en tareas que no requieren una respuesta inmediata. El envío de correos electrónicos es uno de los principales ejemplos de este enfoque. En lugar de procesar estas tareas de manera síncrona, lo cual podría generar demoras innecesarias para el usuario, se ejecutan en segundo plano, permitiendo que la experiencia sea más fluida.
 ### Casos de uso del envío de correos electrónicos:
 1. **Registro de un Nuevo Usuario:**
@@ -129,7 +129,7 @@ En **Foodtales**, los eventos y la asincronía juegan un papel importante para m
 
 2. **Registro de un Nuevo Restaurante:**
    - Cuando un restaurante es registrado por un usuario, también se genera un evento asíncrono que envía un correo electrónico de bienvenida al propietario del restaurante. Este correo está diseñado para proporcionar instrucciones sobre cómo gestionar el perfil del restaurante dentro de la plataforma, destacando herramientas que pueden ayudar a mejorar su visibilidad frente a otros usuarios. Este evento se ejecuta sin afectar la fluidez de la experiencia del usuario, mejorando la escalabilidad del sistema.
-## GitHub 🖥️🔧
+## GitHub
 El desarrollo de **Foodtales** se gestionó de forma colaborativa utilizando **GitHub**, donde se emplearon ramas, issues y pull requests para organizar y revisar el trabajo de todo el equipo.
 
 - **Ramas (Branches):** Cada nueva funcionalidad o corrección de errores se desarrolló en ramas independientes para evitar conflictos en la rama principal (`main`). Esto permitió que los miembros del equipo trabajaran en paralelo de manera eficiente.
@@ -139,10 +139,11 @@ El desarrollo de **Foodtales** se gestionó de forma colaborativa utilizando **G
 - **Pull Requests:** Antes de fusionar cualquier cambio en la rama principal, se creaba un pull request. Esto permitió que los cambios fueran revisados y discutidos por el equipo, asegurando la calidad del código antes de su integración.
 
 Este flujo de trabajo colaborativo permitió mantener el proyecto organizado, mejorar la calidad del código mediante revisiones, y asegurar una integración continua sin problemas.
-## Conclusiones: 📌
+## Conclusiones
 ### Logros del Proyecto: 📝
 El desarrollo de Foodtales ha permitido crear una plataforma que resuelve una necesidad significativa al ofrecer un espacio donde los usuarios pueden encontrar y compartir experiencias culinarias de forma auténtica. Se ha logrado integrar funcionalidades para la publicación de reseñas y discusión abierta entre amantes de la comida. Esto ha contribuido a la construcción de una comunidad activa en torno a la gastronomía, facilitando el descubrimiento de nuevos lugares y el crecimiento de pequeños negocios locales.
 ### Aprendizajes Clave: 📚
 Durante el desarrollo de la aplicación, aprendimos la importancia de planificar bien la estructura del código para que fuera fácil de mantener y mejorar. Además, trabajar con retroalimentación constante nos ayudó a ajustar detalles de la interfaz, mejorando la usabilidad y asegurando una experiencia positiva para los usuarios.
 ### Trabajo Futuro: 🚀
 En el futuro, nos gustaría agregar más funciones, como filtros para buscar comida según preferencias personales o recomendaciones en tiempo real. También planeamos ofrecer recompensas para los usuarios más activos y hacer alianzas con restaurantes para ofrecer descuentos exclusivos a la comunidad.
+
