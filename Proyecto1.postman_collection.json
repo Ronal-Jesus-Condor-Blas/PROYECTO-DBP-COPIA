@@ -12,11 +12,21 @@
 				{
 					"name": "Crear Usuario -> INFLUENCER",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJsdWlzLmJhcmFob25hQHV0ZWMuZWR1LnBlIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3Mjg4NjI5MzEsImV4cCI6MTcyODg5ODkzMX0.HyprfF7JCiqT4vsUe9JbRY5UTMrwUFNFalC9226QrVw",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john.doe@example.com\",\n  \"bio\": \"Software developer with 10 years of experience.\",\n  \"userType\": \"INFLUENCER\",\n  \"password\": \"securepassword123\"\n}",
+							"raw": "{\n  \"name\": \"Isaac\",\n  \"email\": \"isaaccc.simeon@utec.edu.pe\",\n  \"bio\": \"Software developer with 10 years of experience.\",\n  \"userType\": \"INFLUENCER\",\n  \"password\": \"securepassword123\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -24,12 +34,10 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/users",
-							"protocol": "http",
+							"raw": "{{host}}/users",
 							"host": [
-								"localhost"
+								"{{host}}"
 							],
-							"port": "8080",
 							"path": [
 								"users"
 							]
@@ -111,15 +119,15 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/users/9",
+							"raw": "http://{{ruta}}:8080/users/63",
 							"protocol": "http",
 							"host": [
-								"localhost"
+								"{{ruta}}"
 							],
 							"port": "8080",
 							"path": [
 								"users",
-								"9"
+								"63"
 							]
 						}
 					},
@@ -183,7 +191,8 @@
 					},
 					"response": []
 				}
-			]
+			],
+			"description": "El usuario puede tomar dos roles (INFLUENCER o CONSUMER)\n\n1. El INFLUENCER"
 		},
 		{
 			"name": "Comment",
@@ -195,7 +204,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"userId\": 1,\n  \"postId\": 3,\n  \"content\": \"This is a sample comment\"\n}",
+							"raw": "{\n  \"userId\": 7,\n  \"postId\": 1,\n  \"content\": \"Comentario no parchado\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -203,10 +212,10 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/comments",
+							"raw": "http://{{ruta}}:8080/comments",
 							"protocol": "http",
 							"host": [
-								"localhost"
+								"{{ruta}}"
 							],
 							"port": "8080",
 							"path": [
@@ -582,11 +591,21 @@
 				{
 					"name": "Crear Restaurante",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJsdWlzcy5iYXJhaG9uYUB1dGVjLmVkdS5wZSIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzI4ODgwMDU5LCJleHAiOjE3Mjg5MTYwNTl9.OmmGa8smf9-KBIxB4ogeniq2r9fy9YBlQQMHJIiIMBA",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"El Buen Sabor 9\",\n  \"location\": \"123 Main St, Springfield\",\n  \"status\": \"CLOSED\",\n  \"email\": \"barahonaluisdavid101@gmail.com\"\n}",
+							"raw": "{\n  \"name\": \"El Buen Sabor 9\",\n  \"location\": \"123 Main St, Springfield\",\n  \"status\": \"OPEN\",\n  \"email\": \"vid101@gmail.comm\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -594,10 +613,10 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/restaurants",
+							"raw": "http://{{ruta}}:8080/restaurants",
 							"protocol": "http",
 							"host": [
-								"localhost"
+								"{{ruta}}"
 							],
 							"port": "8080",
 							"path": [
@@ -610,18 +629,26 @@
 				{
 					"name": "Obtener restaurante cuyo id sea {id}",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJKb24uYmFyYWhvbmFAdXRlYy5lZHUucGUiLCJyb2xlIjoiVVNFUiIsImlhdCI6MTcyODg2MTE3NCwiZXhwIjoxNzI4ODk3MTc0fQ.0CW5ChYvjvT2E7dTa8qjEzuWGoN6JgugYDTKup3OUAM",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/restaurants/6",
-							"protocol": "http",
+							"raw": "{{host}}/restaurants/33",
 							"host": [
-								"localhost"
+								"{{host}}"
 							],
-							"port": "8080",
 							"path": [
 								"restaurants",
-								"6"
+								"33"
 							]
 						}
 					},
@@ -742,10 +769,10 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/typefoods/9",
+							"raw": "http://{{ruta}}:8080/typefoods/9",
 							"protocol": "http",
 							"host": [
-								"localhost"
+								"{{ruta}}"
 							],
 							"port": "8080",
 							"path": [
@@ -762,10 +789,10 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/typefoods/10",
+							"raw": "http://{{ruta}}:8080/typefoods/10",
 							"protocol": "http",
 							"host": [
-								"localhost"
+								"{{ruta}}"
 							],
 							"port": "8080",
 							"path": [
@@ -783,7 +810,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"type\": \"Alemana 2 - reemplazada\",\n  \"description\": \"Procedente de Peru\"\n}",
+							"raw": "{\n  \"type\": \"Mexicana\",\n  \"description\": \"Traditional Italian cuisine\",\n  \"restaurantId\": 2\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -791,10 +818,10 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/typefoods/11",
+							"raw": "http://{{ruta}}:8080/typefoods/11",
 							"protocol": "http",
 							"host": [
-								"localhost"
+								"{{ruta}}"
 							],
 							"port": "8080",
 							"path": [
@@ -820,10 +847,10 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/typefoods/12",
+							"raw": "http://{{ruta}}:8080/typefoods/12",
 							"protocol": "http",
 							"host": [
-								"localhost"
+								"{{ruta}}"
 							],
 							"port": "8080",
 							"path": [
@@ -854,10 +881,10 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/foodratings",
+							"raw": "http://{{ruta}}:8080/foodratings",
 							"protocol": "http",
 							"host": [
-								"localhost"
+								"{{ruta}}"
 							],
 							"port": "8080",
 							"path": [
@@ -1144,10 +1171,10 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/foodratings",
+							"raw": "http://{{ruta}}:8080/foodratings",
 							"protocol": "http",
 							"host": [
-								"localhost"
+								"{{ruta}}"
 							],
 							"port": "8080",
 							"path": [
@@ -1163,10 +1190,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/users/900",
+							"raw": "http://{{ruta}}:8080/users/900",
+							"protocol": "http",
 							"host": [
-								"{{host}}"
+								"{{ruta}}"
 							],
+							"port": "8080",
 							"path": [
 								"users",
 								"900"
@@ -1327,22 +1356,6 @@
 					]
 				},
 				{
-					"name": "Comidas_Comentarios",
-					"item": [
-						{
-							"name": "Listar comentarios realizados sobre la comida \"Ceviche\"",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": ""
-								}
-							},
-							"response": []
-						}
-					]
-				},
-				{
 					"name": "Usuarios_CalificacionesRestaurante",
 					"item": [
 						{
@@ -1398,34 +1411,6 @@
 								}
 							},
 							"response": []
-						},
-						{
-							"name": "Crear Publicación Copy",
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"userId\": 3,\n  \"image\": \"http://example.com/image.jpg\",\n  \"content\": \"Hola soy el usuario 3 y quiero compartir esto con ustedes\",\n  \"createdDate\": \"2023-10-01T12:00:00\",\n  \"status\": \"ACTIVE\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "http://localhost:8080/posts",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "8080",
-									"path": [
-										"posts"
-									]
-								}
-							},
-							"response": []
 						}
 					]
 				},
@@ -1438,7 +1423,18 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": ""
+									"raw": "http://{{ruta}}:8080/foods/restaurants/17/foods",
+									"protocol": "http",
+									"host": [
+										"{{ruta}}"
+									],
+									"port": "8080",
+									"path": [
+										"foods",
+										"restaurants",
+										"17",
+										"foods"
+									]
 								}
 							},
 							"response": []
@@ -1489,8 +1485,238 @@
 					]
 				}
 			]
+		},
+		{
+			"name": "Autenticación",
+			"item": [
+				{
+					"name": "Registrar Usuario -> Influencer",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"John Doe2\",\n  \"email\": \"Jon.barahona@utec.edu.pe\",\n  \"bio\": \"Software developer with 10 years of experience.\",\n  \"userType\": \"INFLUENCER\",\n  \"password\": \"securepassword123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/auth/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logear Usuario -> Influencer Copy",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJsdWlzLmJhcmFob25hQHV0ZWMuZWR1LnBlIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3Mjg4NjI5MzEsImV4cCI6MTcyODg5ODkzMX0.HyprfF7JCiqT4vsUe9JbRY5UTMrwUFNFalC9226QrVw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"luis.barahona@utec.edu.pe\",\n  \"password\": \"securepassword123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/auth/login",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar usuario con ID Copy",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJtYW51ZWxAdXRlYy5lZHUucGUiLCJyb2xlIjoiVVNFUiIsImlhdCI6MTcyODg2MjY0NiwiZXhwIjoxNzI4ODk4NjQ2fQ.99uneUs_yIH3bueVjyyJBZbOSd7nMxPCpIwXQPW8DRE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/users/12",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"12"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar Restaurante por ID Copy",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJsdWlzLmJhcmFob25hQHV0ZWMuZWR1LnBlIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3Mjg4NjI5MzEsImV4cCI6MTcyODg5ODkzMX0.HyprfF7JCiqT4vsUe9JbRY5UTMrwUFNFalC9226QrVw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://{{ruta}}:8080/restaurants/6",
+							"protocol": "http",
+							"host": [
+								"{{ruta}}"
+							],
+							"port": "8080",
+							"path": [
+								"restaurants",
+								"6"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Despliegue",
+			"item": [
+				{
+					"name": "Registrar Usuario -> Influencer Copy",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Joaquin \",\n  \"email\": \"luis.barahona@utec.edu.pe\",\n  \"bio\": \"Software developer with 10 years of experience.\",\n  \"userType\": \"INFLUENCER\",\n  \"password\": \"securepassword123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{ruta}}:8080/auth/register",
+							"protocol": "http",
+							"host": [
+								"{{ruta}}"
+							],
+							"port": "8080",
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar usuario con ID Copy 2",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://{{ruta}}:8080/users/12",
+							"protocol": "http",
+							"host": [
+								"{{ruta}}"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"12"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "noauth"
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
 		}
 	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJsdWlzLmJhcmFob25hQHV0ZWMuZWR1LnBlIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3Mjg4NjI5MzEsImV4cCI6MTcyODg5ODkzMX0.HyprfF7JCiqT4vsUe9JbRY5UTMrwUFNFalC9226QrVw",
+				"type": "string"
+			}
+		]
+	},
 	"event": [
 		{
 			"listen": "prerequest",

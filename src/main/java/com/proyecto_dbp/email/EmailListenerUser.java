@@ -72,7 +72,7 @@ public class EmailListenerUser {
                 "    </section>\n" +
                 "    <h1>¡Hola {{nombre}}, bienvenid@ a FoodTales!</h1>\n" +
                 "    <h2>Tu registro ha sido exitoso</h2>\n" +
-                "    <img src=\"https://i.imgur.com/y1nOX2v.png\" alt=\"Logo Mure\">" +
+                "    <img src=\"https://i.imgur.com/y1nOX2v.png\" alt=\":)\">" +
                 "    <p>Te has registrado con este email: <strong>{{email}}</strong></p>\n" +
                 "    <p>Te has registrado con el rol de: <strong>{{rol}}</strong></p>\n" +
                 "    <p>¡Comparte con la comunidad tu preferencia en comidas!</p>\n" +
