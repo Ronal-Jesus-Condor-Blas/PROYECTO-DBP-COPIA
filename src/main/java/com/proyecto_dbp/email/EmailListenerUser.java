@@ -72,7 +72,7 @@ public class EmailListenerUser {
                 "    </section>\n" +
                 "    <h1>¡Hola {{nombre}}, bienvenid@ a FoodTales!</h1>\n" +
                 "    <h2>Tu registro ha sido exitoso</h2>\n" +
-                "    <p>Tu userId es: <strong>{{userId}}</strong></p>\n" +
+                "    <img src=\"https://i.imgur.com/y1nOX2v.png\" alt=\"Logo Mure\">" +
                 "    <p>Te has registrado con este email: <strong>{{email}}</strong></p>\n" +
                 "    <p>Te has registrado con el rol de: <strong>{{rol}}</strong></p>\n" +
                 "    <p>¡Comparte con la comunidad tu preferencia en comidas!</p>\n" +
@@ -97,17 +97,15 @@ public class EmailListenerUser {
     public void handleHelloEmailEvent(HelloEmailEvent event) throws MessagingException, jakarta.mail.MessagingException {
 
         String contenidoTxt = "mensaje simple en formato string - no html";
-        //CODE ADICIONAL PARA ENVIAR HTML
-        // Preparar contenido del correo
+
         String destinatario = event.getEmail(); // Puedes extraer esto del userResponseDto si lo necesitas
+
         String asunto = "Bienvenid@ a FoodTales - Registro Exitoso";
+
+
         String contenidoHTML = generarEmailHtml(event.getUserId().toString(), event.getEmail(),event.getName(), event.getRol());
 
-        // Enviar el correo usando el EmailService - usa SimpleMessage - funciona
-        //emailService.sendSimpleMessage(destinatario, asunto, contenidoTxt);
-
-        //Enviar correo usando mimemessage
         emailService.enviarCorreoHTML(destinatario,asunto,contenidoHTML);
-        //FIN DE CODE ADICIONAL
+
     }
 }

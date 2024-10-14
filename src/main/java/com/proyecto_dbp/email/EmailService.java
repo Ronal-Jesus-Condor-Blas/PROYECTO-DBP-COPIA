@@ -39,8 +39,8 @@ public class EmailService {
         //imagenes
 
         // Adjuntar la imagen
-        FileSystemResource res = new FileSystemResource(new File("/home/luisbarahona/Documents/CreatedByBarahona/Proyectos_2024_2/ProyectoDBP/proyecto-backend-foodtales/src/main/resources/static/logo4.jpeg"));
-        helper.addInline("logo4", res);
+        //FileSystemResource res = new FileSystemResource(new File("./image/logo4.jpeg"));
+        //helper.addInline("logo4", res);
 
         mailSender.send(message);
     }
