@@ -1,5 +1,6 @@
 package com.proyecto_dbp.auth.domain;
 
+import com.proyecto_dbp.email.HelloEmailEvent;
 import com.proyecto_dbp.user.domain.Role;
 import com.proyecto_dbp.user.domain.User;
 import com.proyecto_dbp.auth.dto.JwtAuthResponse;
@@ -10,6 +11,7 @@ import com.proyecto_dbp.config.JwtService;
 import com.proyecto_dbp.user.infrastructure.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -34,6 +36,9 @@ public class AuthService {
         this.passwordEncoder = passwordEncoder;
         this.modelMapper = new ModelMapper();
     }
+
+    @Autowired
+    private ApplicationEventPublisher applicationEventPublisher;
 
     public JwtAuthResponse login(LoginReq req) {
         Optional<User> user;
@@ -65,6 +70,10 @@ public class AuthService {
 
         JwtAuthResponse response = new JwtAuthResponse();
         response.setToken(jwtService.generateToken(newUser));
+
+        //adicional
+        applicationEventPublisher.publishEvent(new HelloEmailEvent(newUser.getUserId(), newUser.getEmail(), newUser.getName(), newUser.getUserType())); //email
+
         return response;
     }
 
