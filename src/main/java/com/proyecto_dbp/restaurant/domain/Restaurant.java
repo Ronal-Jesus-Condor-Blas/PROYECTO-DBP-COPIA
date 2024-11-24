@@ -43,7 +43,13 @@ public class Restaurant {
     private String name;
 
     @NotNull
-    private String location;
+    private Float latitude;
+
+    @NotNull
+    private Float longitude;
+
+    @NotNull
+    private String image;
 
     private Double averageRating;
     private LocalDateTime createdDate;

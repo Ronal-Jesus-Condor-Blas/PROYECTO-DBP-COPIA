@@ -8,8 +8,8 @@ import org.hibernate.validator.constraints.UniqueElements;
 @Data
 public class RestaurantRequestDto {
     private String name;
-    private String location;
+    private Float latitude;
+    private Float longitude;
     private RestaurantStatus status;
-    //Agregar email para recibir confirmaciones de "foodrating"
     private String email;
 }

@@ -74,6 +74,8 @@ public class CommentService {
         commentResponseDto.setCommentDate(comment.getCommentDate());
         commentResponseDto.setUserId(comment.getUser().getUserId());
         commentResponseDto.setPostId(comment.getPost().getPostId());
+        commentResponseDto.setUserName(comment.getUser().getName());
+        commentResponseDto.setUserPhoto(comment.getUser().getProfilePicture());
         return commentResponseDto;
     }
 

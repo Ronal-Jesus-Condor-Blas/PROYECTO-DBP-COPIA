@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -39,14 +40,26 @@ public class RestaurantController {
         return ResponseEntity.ok(restaurants);
     }
 
-    @PostMapping
-    public ResponseEntity<RestaurantResponseDto> createRestaurant(@RequestBody RestaurantRequestDto restaurantRequestDto) {
-        RestaurantResponseDto createdRestaurant = restaurantService.createRestaurant(restaurantRequestDto);
-        //Lanzar evento (correo de bienvenida al restaurante que se ha registrado a nuestra red social de comidas)
-        applicationEventPublisher.publishEvent(new NewRestaurantEvent(createdRestaurant.getRestaurantId().toString(), createdRestaurant.getEmail(), createdRestaurant.getName(), createdRestaurant.getLocation())); //email
+    @PostMapping(consumes = {"multipart/form-data"})
+    public ResponseEntity<RestaurantResponseDto> createRestaurant(
+            @RequestPart("restaurant") RestaurantRequestDto restaurantRequestDto,
+            @RequestPart(value = "image", required = false) MultipartFile image) {
+
+        RestaurantResponseDto createdRestaurant = restaurantService.createRestaurant(restaurantRequestDto, image);
+
+        // Enviar correo de bienvenida
+        applicationEventPublisher.publishEvent(
+                new NewRestaurantEvent(
+                        createdRestaurant.getRestaurantId().toString(),
+                        createdRestaurant.getEmail(),
+                        createdRestaurant.getName(),
+                        createdRestaurant.getLatitude().toString() + ", " + createdRestaurant.getLongitude().toString()
+                )
+        );
 
         return ResponseEntity.ok(createdRestaurant);
     }
+
 
     //**
     @PatchMapping("/{id}")
@@ -58,13 +71,14 @@ public class RestaurantController {
         return ResponseEntity.notFound().build();
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<RestaurantResponseDto> updateRestaurant(@PathVariable Long id, @RequestBody RestaurantRequestDto restaurantRequestDto) {
-        RestaurantResponseDto updatedRestaurant = restaurantService.updateRestaurant(id, restaurantRequestDto);
-        if (updatedRestaurant != null) {
-            return ResponseEntity.ok(updatedRestaurant);
-        }
-        return ResponseEntity.notFound().build();
+    @PutMapping(value = "/{id}", consumes = {"multipart/form-data"})
+    public ResponseEntity<RestaurantResponseDto> updateRestaurant(
+            @PathVariable Long id,
+            @RequestPart("restaurant") RestaurantRequestDto restaurantRequestDto,
+            @RequestPart(value = "image", required = false) MultipartFile image) {
+
+        RestaurantResponseDto updatedRestaurant = restaurantService.updateRestaurant(id, restaurantRequestDto, image);
+        return ResponseEntity.ok(updatedRestaurant);
     }
 
     @DeleteMapping("/{id}")

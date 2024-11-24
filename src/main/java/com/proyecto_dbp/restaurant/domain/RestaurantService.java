@@ -1,5 +1,9 @@
 package com.proyecto_dbp.restaurant.domain;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.proyecto_dbp.exception.ResourceNotFoundException;
 import com.proyecto_dbp.exception.ValidationException;
 import com.proyecto_dbp.restaurant.dto.RestaurantRequestDto;
@@ -7,9 +11,15 @@ import com.proyecto_dbp.restaurant.dto.RestaurantResponseDto;
 import com.proyecto_dbp.restaurant.infrastructure.RestaurantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.reactive.function.client.WebClient;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Base64;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -17,6 +27,14 @@ public class RestaurantService {
 
     @Autowired
     private RestaurantRepository restaurantRepository;
+
+
+    private final WebClient webClient;
+
+    @Autowired
+    public RestaurantService(WebClient webClient) {
+        this.webClient = webClient;
+    }
 
     public RestaurantResponseDto getRestaurantById(Long id) {
         Restaurant restaurant = restaurantRepository.findById(id)
@@ -29,31 +47,53 @@ public class RestaurantService {
         return restaurants.stream().map(this::mapToDto).collect(Collectors.toList());
     }
 
-    public RestaurantResponseDto createRestaurant(RestaurantRequestDto restaurantRequestDto) {
+    public RestaurantResponseDto createRestaurant(RestaurantRequestDto restaurantRequestDto, MultipartFile image) {
         if (restaurantRepository.findByEmail(restaurantRequestDto.getEmail()).isPresent()) {
             throw new ValidationException("Email already in use");
         }
 
-        if (restaurantRequestDto.getName() == null || restaurantRequestDto.getName().isEmpty()) {
-            throw new ValidationException("Name cannot be null or empty");
+        // Subir imagen si está presente
+        String imageUrl = null;
+        if (image != null && !image.isEmpty()) {
+            imageUrl = uploadImage(image, "restaurant");
         }
+
         Restaurant restaurant = mapToEntity(restaurantRequestDto);
+        restaurant.setImage(imageUrl); // Guardar la URL de la imagen en el restaurante
+
         restaurant = restaurantRepository.save(restaurant);
         return mapToDto(restaurant);
     }
 
-    public RestaurantResponseDto updateRestaurant(Long id, RestaurantRequestDto restaurantRequestDto) {
+    public RestaurantResponseDto updateRestaurant(Long id, RestaurantRequestDto restaurantRequestDto, MultipartFile image) {
         Restaurant restaurant = restaurantRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Restaurant not found with id " + id));
-        if (restaurantRequestDto.getName() == null || restaurantRequestDto.getName().isEmpty()) {
-            throw new ValidationException("Name cannot be null or empty");
+
+        if (restaurantRequestDto.getName() != null) {
+            restaurant.setName(restaurantRequestDto.getName());
         }
-        restaurant.setName(restaurantRequestDto.getName());
-        restaurant.setLocation(restaurantRequestDto.getLocation());
-        restaurant.setStatus(restaurantRequestDto.getStatus());
+        if (restaurantRequestDto.getLatitude() != null) {
+            restaurant.setLatitude(restaurantRequestDto.getLatitude());
+        }
+        if (restaurantRequestDto.getLongitude() != null) {
+            restaurant.setLongitude(restaurantRequestDto.getLongitude());
+        }
+        if (restaurantRequestDto.getStatus() != null) {
+            restaurant.setStatus(restaurantRequestDto.getStatus());
+        }
+        if (image != null && !image.isEmpty()) {
+            String imageUrl = uploadImage(image, "restaurant");
+            restaurant.setImage(imageUrl);
+        }
+
+        if (restaurantRequestDto.getEmail() != null) {
+            restaurant.setEmail(restaurantRequestDto.getEmail());
+        }
+
         restaurant = restaurantRepository.save(restaurant);
         return mapToDto(restaurant);
     }
+
 
     public void deleteRestaurant(Long id) {
         if (!restaurantRepository.existsById(id)) {
@@ -62,11 +102,39 @@ public class RestaurantService {
         restaurantRepository.deleteById(id);
     }
 
+    private String uploadImage(MultipartFile image, String type) {
+        try {
+            String base64Image = Base64.getEncoder().encodeToString(image.getBytes());
+
+            Map<String, String> requestBody = new HashMap<>();
+            requestBody.put("type", type);
+            requestBody.put("image", base64Image);
+
+            String response = webClient.post()
+                    .bodyValue(requestBody)
+                    .retrieve()
+                    .bodyToMono(String.class)
+                    .block();
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode responseJson = objectMapper.readTree(response);
+
+            String bodyContent = responseJson.get("body").asText();
+            JsonNode bodyJson = objectMapper.readTree(bodyContent);
+
+            return bodyJson.get("image_url").asText();
+        } catch (IOException e) {
+            throw new RuntimeException("Error uploading image", e);
+        }
+    }
+
     private RestaurantResponseDto mapToDto(Restaurant restaurant) {
         RestaurantResponseDto restaurantResponseDto = new RestaurantResponseDto();
         restaurantResponseDto.setRestaurantId(restaurant.getRestaurantId());
         restaurantResponseDto.setName(restaurant.getName());
-        restaurantResponseDto.setLocation(restaurant.getLocation());
+        restaurantResponseDto.setLatitude(restaurant.getLatitude());
+        restaurantResponseDto.setLongitude(restaurant.getLongitude());
+        restaurantResponseDto.setImage(restaurant.getImage());
         restaurantResponseDto.setStatus(restaurant.getStatus());
         //restaurantResponseDto.setAverageRating(restaurant.getAverageRating());
         restaurantResponseDto.setCreatedDate(restaurant.getCreatedDate());
@@ -77,10 +145,11 @@ public class RestaurantService {
     private Restaurant mapToEntity(RestaurantRequestDto restaurantRequestDto) {
         Restaurant restaurant = new Restaurant();
         restaurant.setName(restaurantRequestDto.getName());
-        restaurant.setLocation(restaurantRequestDto.getLocation());
+        restaurant.setLatitude(restaurantRequestDto.getLatitude());
+        restaurant.setLongitude(restaurantRequestDto.getLongitude());
         restaurant.setStatus(restaurantRequestDto.getStatus());
-        restaurant.setCreatedDate(LocalDateTime.now());
         restaurant.setEmail(restaurantRequestDto.getEmail());
+        restaurant.setCreatedDate(LocalDateTime.now());
         return restaurant;
     }
 
@@ -95,10 +164,16 @@ public class RestaurantService {
             restaurant.setName(restaurant.getName());
         }
 
-        if (restaurantRequestDto.getLocation() != null && !restaurantRequestDto.getLocation().isEmpty()) {
-            restaurant.setLocation(restaurantRequestDto.getLocation());
+        if (restaurantRequestDto.getLatitude() != null) {
+            restaurant.setLatitude(restaurantRequestDto.getLatitude());
         } else {
-            restaurant.setLocation(restaurant.getLocation());
+            restaurant.setLatitude(restaurant.getLatitude());
+        }
+
+        if (restaurantRequestDto.getLongitude() != null) {
+            restaurant.setLongitude(restaurantRequestDto.getLongitude());
+        } else {
+            restaurant.setLongitude(restaurant.getLongitude());
         }
 
         if (restaurantRequestDto.getStatus() != null) {
