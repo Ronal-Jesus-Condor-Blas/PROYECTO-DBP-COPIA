@@ -7,6 +7,7 @@ import com.proyecto_dbp.post.dto.PostResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -32,28 +33,32 @@ public class PostController {
         return ResponseEntity.ok(posts);
     }
 
-    @PostMapping
-    public ResponseEntity<PostResponseDto> createPost(@RequestBody PostRequestDto postRequestDto) {
-        PostResponseDto createdPost = postService.createPost(postRequestDto);
+    @PostMapping(consumes = {"multipart/form-data"})
+    public ResponseEntity<PostResponseDto> createPost(
+            @RequestPart("post") PostRequestDto postRequestDto,
+            @RequestPart(value = "image", required = false) MultipartFile image
+    ) {
+        PostResponseDto createdPost = postService.createPost(postRequestDto, image);
         return ResponseEntity.ok(createdPost);
     }
 
-    @PatchMapping("/{id}")
-    public ResponseEntity<PostResponseDto> parchPost(@PathVariable Long id, @RequestBody PostRequestDto postRequestDto) {
-        PostResponseDto updatedPost = postService.updatePost(id, postRequestDto);
-        if (updatedPost != null) {
-            return ResponseEntity.ok(updatedPost);
-        }
-        return ResponseEntity.notFound().build();
+    @PatchMapping(value = "/{id}", consumes = {"multipart/form-data"})
+    public ResponseEntity<PostResponseDto> parchPost (
+            @PathVariable Long id,
+            @RequestPart("post") PostRequestDto postRequestDto,
+            @RequestPart(value = "image", required = false) MultipartFile image) {
+        PostResponseDto updatedPost = postService.updatePost(id, postRequestDto, image);
+        return ResponseEntity.ok(updatedPost);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<PostResponseDto> updatePost(@PathVariable Long id, @RequestBody PostRequestDto postRequestDto) {
-        PostResponseDto updatedPost = postService.updatePost(id, postRequestDto);
-        if (updatedPost != null) {
-            return ResponseEntity.ok(updatedPost);
-        }
-        return ResponseEntity.notFound().build();
+    @PutMapping(value = "/{id}", consumes = {"multipart/form-data"})
+    public ResponseEntity<PostResponseDto> updatePost(
+            @PathVariable Long id,
+            @RequestPart("post") PostRequestDto postRequestDto,
+            @RequestPart(value = "image", required = false) MultipartFile image) {
+        PostResponseDto updatedPost = postService.updatePost(id, postRequestDto, image);
+        System.out.println(updatedPost);
+        return ResponseEntity.ok(updatedPost);
     }
 
     @DeleteMapping("/{id}")

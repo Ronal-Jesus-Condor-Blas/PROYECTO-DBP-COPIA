@@ -10,4 +10,5 @@ public class UserResponseDto {
     private String email;
     private String bio;
     private UserType userType;
+    private String profilePicture;
 }

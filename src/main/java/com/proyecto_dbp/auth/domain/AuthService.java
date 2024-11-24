@@ -8,15 +8,19 @@ import com.proyecto_dbp.auth.dto.LoginReq;
 import com.proyecto_dbp.auth.dto.RegisterReq;
 import com.proyecto_dbp.auth.exceptions.UserAlreadyExistException;
 import com.proyecto_dbp.config.JwtService;
+import com.proyecto_dbp.user.domain.UserService;
+import com.proyecto_dbp.user.domain.UserType;
+import com.proyecto_dbp.user.dto.UserRequestDto;
+import com.proyecto_dbp.user.dto.UserResponseDto;
 import com.proyecto_dbp.user.infrastructure.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.ZonedDateTime;
 import java.util.Optional;
 
 
@@ -30,6 +34,10 @@ public class AuthService {
     private final ModelMapper modelMapper;
 
     @Autowired
+    private UserService userService;
+
+
+    @Autowired
     public AuthService(UserRepository userRepository, JwtService jwtService, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.jwtService = jwtService;
@@ -41,41 +49,68 @@ public class AuthService {
     private ApplicationEventPublisher applicationEventPublisher;
 
     public JwtAuthResponse login(LoginReq req) {
-        Optional<User> user;
-        user = userRepository.findByEmail(req.getEmail());
+        Optional<User> userOptional = userRepository.findByEmail(req.getEmail());
 
-        if (user.isEmpty()) throw new UsernameNotFoundException("Email is not registered");
+        if (userOptional.isEmpty()) {
+            throw new UsernameNotFoundException("Email is not registered");
+        }
 
-        if (!passwordEncoder.matches(req.getPassword(), user.get().getPassword()))
+        User user = userOptional.get();
+
+        if (!passwordEncoder.matches(req.getPassword(), user.getPassword())) {
             throw new IllegalArgumentException("Password is incorrect");
+        }
 
         JwtAuthResponse response = new JwtAuthResponse();
+        response.setToken(jwtService.generateToken(user));
 
-        response.setToken(jwtService.generateToken(user.get()));
+        // Convertir User a UserResponseDto (asumiendo que tienes un método de mapeo en UserService o un mapper)
+        UserResponseDto userDto = modelMapper.map(user, UserResponseDto.class);
+        response.setUser(userDto);
+
         return response;
     }
 
     public JwtAuthResponse register(RegisterReq req) {
+        // Verificar si el usuario ya existe
         Optional<User> user = userRepository.findByEmail(req.getEmail());
-        if (user.isPresent()) throw new UserAlreadyExistException("Email already in use");
+        if (user.isPresent()) {
+            throw new UserAlreadyExistException("Email already in use");
+        }
 
-        User newUser = modelMapper.map(req, User.class);
-        newUser.setPassword(passwordEncoder.encode(req.getPassword()));
-        newUser.setCreatedAt(ZonedDateTime.now());
-        newUser.setUpdatedAt(ZonedDateTime.now());
-        newUser.setRole(Role.USER);
-        //newUser.setUserType(req.getUserType());
+        // Usamos el UserService para crear el usuario y manejar la imagen de perfil
+        UserRequestDto userRequestDto = new UserRequestDto();
+        userRequestDto.setName(req.getName());
+        userRequestDto.setEmail(req.getEmail());
+        userRequestDto.setBio(req.getBio());
+        userRequestDto.setUserType(UserType.valueOf(req.getUserType().name()));  // Suponiendo que el UserType es un enum
+        userRequestDto.setPassword(passwordEncoder.encode(req.getPassword()));
 
-        userRepository.save(newUser);
+        // Llamamos al servicio de usuario para crear el usuario con la imagen
+        UserResponseDto userResponseDto = userService.createUser(userRequestDto, req.getProfilePicture());
 
+        // Crear la respuesta JWT
         JwtAuthResponse response = new JwtAuthResponse();
-        response.setToken(jwtService.generateToken(newUser));
 
-        //adicional
-        applicationEventPublisher.publishEvent(new HelloEmailEvent(newUser.getUserId(), newUser.getEmail(), newUser.getName(), newUser.getUserType())); //email
+        // Aquí cambiamos a usar el objeto User en lugar de UserResponseDto
+        User userEntity = userRepository.findById(userResponseDto.getUserId())
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        //set role user
+        userEntity.setRole(Role.USER);
+
+        response.setToken(jwtService.generateToken(userEntity));
+
+        response.setUser(userResponseDto);
+
+        // Publicar el evento de correo de bienvenida
+        applicationEventPublisher.publishEvent(new HelloEmailEvent(
+                userResponseDto.getUserId(),
+                userResponseDto.getEmail(),
+                userResponseDto.getName(),
+                userResponseDto.getUserType()
+        ));
 
         return response;
     }
-
-
 }

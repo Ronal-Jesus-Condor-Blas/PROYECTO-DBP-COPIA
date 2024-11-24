@@ -9,13 +9,11 @@ import java.time.LocalDateTime;
 public class PostResponseDto {
     private Long postId;
     private Long userId;
+    private String userName; // Nuevo: Nombre del usuario
+    private String userProfilePicture; // Nuevo: URL de la imagen de perfil del usuario
     private String content;
     private String image;
     private LocalDateTime createdDate;
     private PostStatus status;
     private String title;
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
 }

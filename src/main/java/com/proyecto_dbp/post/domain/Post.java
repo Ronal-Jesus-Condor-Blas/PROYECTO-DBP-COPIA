@@ -29,7 +29,7 @@ public class Post {
     @Enumerated(EnumType.STRING)
     private PostStatus status;  // Estado del post (activo/eliminado)
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Comment> comments;  // Un post puede tener muchos comentarios
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})

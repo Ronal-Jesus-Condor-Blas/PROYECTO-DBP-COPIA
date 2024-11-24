@@ -49,6 +49,8 @@ public class User implements UserDetails {
     @Size(min = 8, max = 64)
     private String password;
     private String bio;
+    private String profilePicture;
+
     @Enumerated(EnumType.STRING)
     private UserType userType;
     private LocalDateTime registrationDate;
@@ -78,12 +80,14 @@ public class User implements UserDetails {
         
     }
 
+    public void setProfilePicture(String profilePicture){
+        this.profilePicture = profilePicture;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
     }
-
 
     public Long getUserId() {
         return userId;
