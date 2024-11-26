@@ -64,9 +64,9 @@ public class UserController {
 
     @PutMapping(value = "/{id}", consumes = {"multipart/form-data"})
     public ResponseEntity<UserResponseDto> updateUser(
-            @PathVariable Long id,
-            @RequestPart("user") UserRequestDto userRequestDto,
-            @RequestPart(value = "image", required = false) MultipartFile image) {
+            @PathVariable Long id, @RequestPart("user") UserRequestDto userRequestDto,
+            @RequestPart(value = "image", required = false) MultipartFile image)
+    {
         UserResponseDto updatedUser = userService.updateUser(id, userRequestDto, image);
         return ResponseEntity.ok(updatedUser);
     }

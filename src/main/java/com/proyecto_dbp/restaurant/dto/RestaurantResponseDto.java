@@ -9,7 +9,9 @@ import java.time.LocalDateTime;
 public class RestaurantResponseDto {
     private Long restaurantId;
     private String name;
-    private String location;
+    private Float latitude;
+    private Float longitude;
+    private String image;
     private RestaurantStatus status;
     //private Double averageRating; //Crear otros DTos para mostrar este atributo en get, etc
     private LocalDateTime createdDate;

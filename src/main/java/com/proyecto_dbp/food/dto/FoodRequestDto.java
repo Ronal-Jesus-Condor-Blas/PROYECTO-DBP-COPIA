@@ -9,6 +9,8 @@ import lombok.Data;
 public class FoodRequestDto {
     private String name;
     private Double price;
+    private String description;
+    private String image;
 
     @JsonDeserialize(using = FoodStatusDeserializer.class)
     private FoodStatus status;

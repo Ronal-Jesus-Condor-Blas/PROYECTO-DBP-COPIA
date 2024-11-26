@@ -28,6 +28,7 @@ public class Food {
 
     private LocalDateTime createdDate;
 
+    private String image;  // Image
 
     @Enumerated(EnumType.STRING)
     private FoodStatus status;  // Enum for food status (available/unavailable)

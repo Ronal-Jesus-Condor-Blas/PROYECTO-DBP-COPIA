@@ -8,6 +8,7 @@ import com.proyecto_dbp.food.dto.FoodResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -33,9 +34,13 @@ public class FoodController {
         return ResponseEntity.ok(foods);
     }
 
-    @PostMapping
-    public ResponseEntity<FoodResponseDto> createFood(@RequestBody FoodRequestDto foodRequestDto) {
-        FoodResponseDto createdFood = foodService.createFood(foodRequestDto);
+    @PostMapping(consumes = {"multipart/form-data"})
+    public ResponseEntity<FoodResponseDto> createFood(
+            @RequestPart("food") FoodRequestDto foodRequestDto,
+            @RequestPart(value = "image", required = false) MultipartFile image
+            )
+    {
+        FoodResponseDto createdFood = foodService.createFood(foodRequestDto, image);
         return ResponseEntity.ok(createdFood);
     }
 
@@ -48,13 +53,13 @@ public class FoodController {
         return ResponseEntity.notFound().build();
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<FoodResponseDto> updateFood(@PathVariable Long id, @RequestBody FoodRequestDto foodRequestDto) {
-        FoodResponseDto updatedFood = foodService.updateFood(id, foodRequestDto);
-        if (updatedFood != null) {
-            return ResponseEntity.ok(updatedFood);
-        }
-        return ResponseEntity.notFound().build();
+    @PutMapping(value = "/{id}", consumes = {"multipart/form-data"})
+    public ResponseEntity<FoodResponseDto> updateFood(
+            @PathVariable Long id,
+            @RequestPart("food") FoodRequestDto foodRequestDto,
+            @RequestPart(value = "image", required = false) MultipartFile image) {
+        FoodResponseDto updatedFood = foodService.updateFood(id, foodRequestDto, image);
+        return ResponseEntity.ok(updatedFood);
     }
 
     @DeleteMapping("/{id}")

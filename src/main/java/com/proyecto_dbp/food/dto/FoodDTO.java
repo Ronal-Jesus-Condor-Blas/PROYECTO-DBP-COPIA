@@ -10,4 +10,7 @@ public class FoodDTO {
     private Double price;
     private Double averageRating;
     private String status;
+    private String description;
+    private String imageUrl;
+    private Long restaurantId;
 }
